@@ -6,7 +6,7 @@ const CREATE_NO_WINDOW: u32 = 0x0800_0000;
 /// Windows recusar (limite de 1 a cada 24 h, proteção do sistema desligada).
 /// O journal próprio continua sendo a garantia principal de reversão.
 pub fn create_restore_point() -> bool {
-    std::process::Command::new("powershell")
+    std::process::Command::new(oo_sys::windows::system_exe(oo_sys::windows::POWERSHELL))
         .args([
             "-NoProfile",
             "-NonInteractive",

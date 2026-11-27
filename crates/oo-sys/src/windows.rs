@@ -42,8 +42,25 @@ fn map(e: std::io::Error) -> SysError {
     }
 }
 
+/// PowerShell 5.1, relativo ao System32.
+pub const POWERSHELL: &str = r"WindowsPowerShell\v1.0\powershell.exe";
+
+/// Caminho absoluto de um executável do System32. O app roda elevado: chamar pelo nome
+/// deixaria o Windows procurar na pasta atual e no PATH (binary planting).
+pub fn system_exe(name: &str) -> std::path::PathBuf {
+    use ::windows::Win32::System::SystemInformation::GetSystemDirectoryW;
+    let mut buf = [0u16; 260];
+    let n = unsafe { GetSystemDirectoryW(Some(&mut buf)) } as usize;
+    let dir = if n > 0 && n < buf.len() {
+        String::from_utf16_lossy(&buf[..n])
+    } else {
+        r"C:WindowsSystem32".to_string()
+    };
+    std::path::Path::new(&dir).join(name)
+}
+
 fn powercfg(args: &[&str]) -> Result<String, SysError> {
-    let o = Command::new("powercfg")
+    let o = Command::new(system_exe("powercfg.exe"))
         .args(args)
         .creation_flags(CREATE_NO_WINDOW)
         .output()
