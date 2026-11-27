@@ -92,8 +92,10 @@ impl SystemBackend for WindowsBackend {
             REG_SZ | REG_EXPAND_SZ => {
                 let wide: Vec<u16> = raw
                     .bytes
-                    .chunks_exact(2)
-                    .map(|c| u16::from_le_bytes([c[0], c[1]]))
+                    .as_chunks::<2>()
+                    .0
+                    .iter()
+                    .map(|c| u16::from_le_bytes(*c))
                     .collect();
                 RegValue::Sz(
                     String::from_utf16_lossy(&wide)
