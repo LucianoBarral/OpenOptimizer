@@ -48,4 +48,5 @@ jobs:
 
       - name: Tamanho do instalador
         shell: pwsh
-        run: Get-ChildItem -Recurse target/release/bundle/nsis/*.exe | ForEach-Object { "{0}: {1:N1} MB" -f $_.Name, ($_.Length / 1MB) }
+        run: |
+          Get-ChildItem -Recurse target/release/bundle/nsis/*.exe | ForEach-Object { "{0}: {1:N1} MB" -f $_.Name, ($_.Length / 1MB) }
