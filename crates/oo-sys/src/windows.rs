@@ -12,6 +12,11 @@ impl WindowsBackend {
     pub fn new() -> Self {
         WindowsBackend
     }
+
+    /// GUIDs de todos os planos de energia existentes.
+    pub fn power_schemes(&self) -> Result<Vec<String>, SysError> {
+        Ok(powercfg::parse_guids(&powercfg(&["/list"])?))
+    }
 }
 
 impl Default for WindowsBackend {

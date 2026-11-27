@@ -2405,6 +2405,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "oo-gaming-win"
+version = "0.1.2"
+dependencies = [
+ "oo-gaming",
+ "oo-sys",
+ "serde",
+ "serde_json",
+ "windows 0.61.3",
+ "winreg 0.55.0",
+]
+
+[[package]]
 name = "oo-metrics"
 version = "0.1.2"
 dependencies = [
