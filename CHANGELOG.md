@@ -9,6 +9,7 @@ Todas as mudanças relevantes do Open Optimizer. Formato baseado em [Keep a Chan
 ### Corrigido
 - Barra de rolagem padrão do Windows (branca e grossa) trocada por uma fina e escura, no tema do app.
 - O conteúdo rolava por baixo da faixa invisível do topo e dos botões minimizar/maximizar/fechar; agora a faixa é fixa e o conteúdo esmaece ao chegar nela.
+- Barra de tarefas mostrava o ícone antigo (asterisco da v0.1.0): a janela só tinha o ícone pequeno definido e o Windows buscava o grande num cache desatualizado. Agora o app define o ícone grande a partir do próprio executável.
 
 ## [0.2.0] - 2026-11-27
 
