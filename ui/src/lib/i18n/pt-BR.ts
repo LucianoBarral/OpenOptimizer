@@ -116,6 +116,11 @@ const ptBR = {
   'gaming.source.manual': 'Manual',
   'tweak.gaming-global-timer.title': 'Timer global para o Modo Gaming',
   'tweak.ifeo.title': 'Prioridade alta: {exe}',
+  'settings.motion': 'Animações',
+  'settings.motion.always': 'Sempre',
+  'settings.motion.system': 'Seguir o Windows',
+  'settings.motion.hint':
+    '“Seguir o Windows” desliga as animações quando “Efeitos de animação” está desligado no Windows (Acessibilidade → Efeitos visuais).',
 } as const;
 
 export default ptBR;

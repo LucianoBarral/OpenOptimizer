@@ -11,6 +11,8 @@
   import CloseDialog from './lib/shell/CloseDialog.svelte';
   import Splash from './lib/brand/Splash.svelte';
   import { onMount } from 'svelte';
+  import { get } from 'svelte/store';
+  import { reduceMotion } from './lib/motion';
   import { route, optimizeRequest } from './lib/stores';
   import { startAutoCheck } from './lib/update';
   import { api } from './lib/ipc/api';
@@ -18,7 +20,7 @@
   import { t, type MessageKey } from './lib/i18n';
 
   // Apresentação: a logo "acelera" (~1.4 s) e some; o app carrega por baixo nesse tempo.
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduced = get(reduceMotion);
   let splash = $state(true);
   let leaving = $state(false);
   let askClose = $state(false);

@@ -5,6 +5,8 @@
   import Button from '../lib/design/Button.svelte';
   import { checkForUpdate } from '../lib/update';
   import { getClosePref, setClosePref, type ClosePref } from '../lib/closePref';
+  import { motionPref, setMotionPref, type MotionPref } from '../lib/motion';
+  const motionOpts: MotionPref[] = ['always', 'system'];
   import { t, locale, setLocale, type Locale, type MessageKey } from '../lib/i18n';
 
   let onClose = $state<ClosePref>(getClosePref());
@@ -65,6 +67,20 @@
   </section>
 
   <section class="rise" style="--i:3">
+    <div class="label">{$t('settings.motion')}</div>
+    <Card class="pad">
+      <div class="seg" role="radiogroup" aria-label={$t('settings.motion')}>
+        {#each motionOpts as o (o)}
+          <button type="button" role="radio" aria-checked={$motionPref === o} class:on={$motionPref === o} onclick={() => setMotionPref(o)}>
+            {$t(`settings.motion.${o}` as MessageKey)}
+          </button>
+        {/each}
+      </div>
+      <p class="hint">{$t('settings.motion.hint')}</p>
+    </Card>
+  </section>
+
+  <section class="rise" style="--i:4">
     <div class="label">{$t('settings.about')}</div>
     <Card class="pad">
       <div class="kv"><span>{$t('settings.version')}</span><span class="mono">{version}</span></div>
@@ -125,6 +141,12 @@
   .seg button.on {
     background: var(--ice);
     color: var(--bg);
+  }
+  .hint {
+    color: var(--mut);
+    font-size: 12px;
+    margin: 10px 0 0;
+    line-height: 1.5;
   }
   .kv {
     display: flex;

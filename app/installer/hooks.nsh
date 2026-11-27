@@ -8,6 +8,9 @@
 !macro NSIS_HOOK_POSTINSTALL
   ; Se o Modo Gaming estava ligado, a tarefa existe: reinicia o daemon atualizado.
   nsExec::Exec '"$SYSDIR\schtasks.exe" /Run /TN "OpenOptimizer\GamingMode"'
+  ; O Windows guarda ícones em cache pelo caminho do .exe; sem isto a barra de tarefas
+  ; e o Gerenciador de Tarefas continuam mostrando o ícone antigo após uma atualização.
+  nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
 !macroend
 
 !macro NSIS_HOOK_PREUNINSTALL

@@ -118,6 +118,11 @@ const en: Record<MessageKey, string> = {
   'gaming.source.manual': 'Manual',
   'tweak.gaming-global-timer.title': 'Global timer for Gaming Mode',
   'tweak.ifeo.title': 'High priority: {exe}',
+  'settings.motion': 'Animations',
+  'settings.motion.always': 'Always',
+  'settings.motion.system': 'Follow Windows',
+  'settings.motion.hint':
+    '“Follow Windows” turns animations off when “Animation effects” is off in Windows (Accessibility → Visual effects).',
 };
 
 export default en;
