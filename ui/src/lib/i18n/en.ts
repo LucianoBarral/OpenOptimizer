@@ -97,6 +97,27 @@ const en: Record<MessageKey, string> = {
   'tray.open': 'Open Open Optimizer',
   'tray.optimize': 'Optimize now',
   'tray.quit': 'Quit',
+  'gaming.waiting': 'Waiting for a game',
+  'gaming.active': 'Active',
+  'gaming.off': 'Off',
+  'gaming.body':
+    'When a listed game opens: 0.5 ms timer, Ultimate Performance plan, memory cleanup when it runs low and high priority. Everything is undone when the game closes — without touching the game process.',
+  'gaming.games': 'GAMES',
+  'gaming.scan': 'Find games',
+  'gaming.add': 'Add game',
+  'gaming.empty': 'No games listed. Use “Find games” or add the executable.',
+  'gaming.stat.sessions': 'SESSIONS',
+  'gaming.stat.time': 'TIME IN GAME',
+  'gaming.stat.purges': 'MEMORY CLEANUPS',
+  'gaming.stat.freed': 'MEMORY FREED',
+  'gaming.since': '{m} min ago',
+  'gaming.error': 'Could not change Gaming Mode. Run the app as administrator.',
+  'gaming.source.windows': 'Windows',
+  'gaming.source.steam': 'Steam',
+  'gaming.source.epic': 'Epic',
+  'gaming.source.manual': 'Manual',
+  'tweak.gaming-global-timer.title': 'Global timer for Gaming Mode',
+  'tweak.ifeo.title': 'High priority: {exe}',
 };
 
 export default en;

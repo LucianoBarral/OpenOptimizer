@@ -7,6 +7,8 @@ import type { ChangeView } from './bindings/ChangeView';
 import type { BatchResult } from './bindings/BatchResult';
 import type { ErrorView } from './bindings/ErrorView';
 import type { Progress } from './bindings/Progress';
+import type { GamingView } from './bindings/GamingView';
+import type { GameView } from './bindings/GameView';
 
 /** Wrapper tipado dos comandos Tauri (nomes iguais aos de app/src/commands.rs). */
 export const api = {
@@ -27,8 +29,13 @@ export const api = {
   quitApp: () => invoke<void>('quit_app'),
   onCloseRequested: (cb: () => void) => listen('close-requested', () => cb()),
   onTrayOptimize: (cb: () => void) => listen('tray-optimize', () => cb()),
+  gamingGet: () => invoke<GamingView>('gaming_get'),
+  gamingSetEnabled: (enabled: boolean) => invoke<GamingView>('gaming_set_enabled', { enabled }),
+  gamingSetGame: (exe: string, enabled: boolean) => invoke<GamingView>('gaming_set_game', { exe, enabled }),
+  gamingAddGame: (path: string) => invoke<GamingView>('gaming_add_game', { path }),
+  gamingScan: () => invoke<GamingView>('gaming_scan'),
 };
 
 export const isErrorView = (e: unknown): e is ErrorView => typeof e === 'object' && e !== null && 'kind' in e;
 
-export type { HardwareView, MetricsView, TweakView, ChangeView, BatchResult, ErrorView, Progress };
+export type { HardwareView, MetricsView, TweakView, ChangeView, BatchResult, ErrorView, Progress, GamingView, GameView };

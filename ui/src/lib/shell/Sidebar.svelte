@@ -12,7 +12,7 @@
       label: 'nav.optimize',
       items: [
         { id: 'performance', key: 'nav.performance', icon: 'M13 2 4 14h7l-1 8 9-12h-7z' },
-        { id: 'gaming', key: 'nav.gaming', icon: 'M6 6h12a4 4 0 0 1 4 4v4a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4v-4a4 4 0 0 1 4-4zM7 10v4M5 12h4', soon: true },
+        { id: 'gaming', key: 'nav.gaming', icon: 'M6 6h12a4 4 0 0 1 4 4v4a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4v-4a4 4 0 0 1 4-4zM7 10v4M5 12h4' },
         { id: 'memory', key: 'nav.memory', icon: 'M4 6h16v12H4zM8 6V3M12 6V3M16 6V3M8 21v-3M12 21v-3M16 21v-3', soon: true },
       ],
     },
