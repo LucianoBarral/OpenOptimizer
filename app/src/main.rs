@@ -1,5 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod commands;
+mod gaming;
 mod memory;
 mod restore;
 mod tray;
@@ -38,6 +39,7 @@ fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_dialog::init())
         .manage(state)
         .setup(|app| {
             tray::build(app)?;
@@ -72,7 +74,12 @@ fn main() {
             tray::set_tray_labels,
             tray::hide_to_tray,
             tray::show_main,
-            tray::quit_app
+            tray::quit_app,
+            gaming::gaming_get,
+            gaming::gaming_set_enabled,
+            gaming::gaming_set_game,
+            gaming::gaming_add_game,
+            gaming::gaming_scan
         ])
         .run(tauri::generate_context!())
         .expect("falha ao iniciar o Tauri");
