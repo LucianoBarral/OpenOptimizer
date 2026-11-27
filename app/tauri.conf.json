@@ -59,7 +59,7 @@
       "endpoints": [
         "https://github.com/LucianoBarral/OpenOptimizer/releases/latest/download/latest.json"
       ],
-      "pubkey": "PREENCHIDO_NA_TASK_10_STEP_1",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDc2QjM2NjZFOTcwMkJEOTEKUldTUnZRS1hibWF6ZHJFR0tpNnVXdFp3Y0I2U1FnM1MvRzlKbDZYb09pWWtNUXhqaVBVOFplUzcK",
       "windows": {
         "installMode": "passive"
       }
