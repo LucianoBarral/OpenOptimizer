@@ -7,12 +7,51 @@
   import Settings from './routes/Settings.svelte';
   import ComingSoon from './routes/ComingSoon.svelte';
   import UpdateBanner from './lib/shell/UpdateBanner.svelte';
+  import CloseDialog from './lib/shell/CloseDialog.svelte';
+  import Splash from './lib/brand/Splash.svelte';
   import { onMount } from 'svelte';
-  import { route } from './lib/stores';
+  import { route, optimizeRequest } from './lib/stores';
   import { startAutoCheck } from './lib/update';
-  import type { MessageKey } from './lib/i18n';
+  import { api } from './lib/ipc/api';
+  import { getClosePref, setClosePref } from './lib/closePref';
+  import { t, type MessageKey } from './lib/i18n';
 
-  onMount(startAutoCheck);
+  // Apresentação: a logo "acelera" (~1.4 s) e some; o app carrega por baixo nesse tempo.
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let splash = $state(true);
+  let leaving = $state(false);
+  let askClose = $state(false);
+
+  function close(choice: 'tray' | 'quit') {
+    if (choice === 'tray') api.hideToTray();
+    else api.quitApp();
+  }
+
+  onMount(() => {
+    startAutoCheck();
+    const t1 = setTimeout(() => (leaving = true), reduced ? 300 : 1500);
+    const t2 = setTimeout(() => (splash = false), reduced ? 400 : 1900);
+    const unClose = api.onCloseRequested(() => {
+      const pref = getClosePref();
+      if (pref === 'ask') askClose = true;
+      else close(pref);
+    });
+    const unTray = api.onTrayOptimize(() => {
+      route.set('overview');
+      optimizeRequest.update((n) => n + 1);
+    });
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      unClose.then((f) => f());
+      unTray.then((f) => f());
+    };
+  });
+
+  // Menu da bandeja no idioma atual.
+  $effect(() => {
+    api.setTrayLabels($t('tray.open'), $t('tray.optimize'), $t('tray.quit')).catch(() => {});
+  });
 
   const soon: Partial<Record<string, MessageKey>> = {
     gaming: 'nav.gaming',
@@ -37,6 +76,19 @@
     {/key}
   </main>
 </div>
+
+{#if askClose}
+  <CloseDialog
+    onchoose={(c, remember) => {
+      askClose = false;
+      if (remember) setClosePref(c);
+      close(c);
+    }}
+    oncancel={() => (askClose = false)}
+  />
+{/if}
+
+{#if splash}<Splash {leaving} />{/if}
 
 <style>
   .app {

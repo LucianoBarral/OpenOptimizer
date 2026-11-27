@@ -2374,7 +2374,7 @@ checksum = "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50"
 
 [[package]]
 name = "oo-catalog"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "oo-core",
  "oo-sys",
@@ -2384,7 +2384,7 @@ dependencies = [
 
 [[package]]
 name = "oo-core"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "chrono",
  "oo-sys",
@@ -2397,7 +2397,7 @@ dependencies = [
 
 [[package]]
 name = "oo-metrics"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "serde",
  "windows 0.61.3",
@@ -2406,7 +2406,7 @@ dependencies = [
 
 [[package]]
 name = "oo-sys"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "serde",
  "thiserror 2.0.21",
@@ -2416,7 +2416,7 @@ dependencies = [
 
 [[package]]
 name = "oo-views"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "oo-core",
  "oo-sys",
@@ -2426,7 +2426,7 @@ dependencies = [
 
 [[package]]
 name = "open-optimizer"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "oo-catalog",
  "oo-core",

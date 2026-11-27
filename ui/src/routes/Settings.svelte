@@ -4,7 +4,11 @@
   import Card from '../lib/design/Card.svelte';
   import Button from '../lib/design/Button.svelte';
   import { checkForUpdate } from '../lib/update';
-  import { t, locale, setLocale, type Locale } from '../lib/i18n';
+  import { getClosePref, setClosePref, type ClosePref } from '../lib/closePref';
+  import { t, locale, setLocale, type Locale, type MessageKey } from '../lib/i18n';
+
+  let onClose = $state<ClosePref>(getClosePref());
+  const closeOpts: ClosePref[] = ['ask', 'tray', 'quit'];
 
   let version = $state('');
   let checking = $state(false);
@@ -39,6 +43,28 @@
   </section>
 
   <section class="rise" style="--i:2">
+    <div class="label">{$t('settings.onClose')}</div>
+    <Card class="pad">
+      <div class="seg" role="radiogroup" aria-label={$t('settings.onClose')}>
+        {#each closeOpts as o (o)}
+          <button
+            type="button"
+            role="radio"
+            aria-checked={onClose === o}
+            class:on={onClose === o}
+            onclick={() => {
+              onClose = o;
+              setClosePref(o);
+            }}
+          >
+            {$t(`settings.onClose.${o}` as MessageKey)}
+          </button>
+        {/each}
+      </div>
+    </Card>
+  </section>
+
+  <section class="rise" style="--i:3">
     <div class="label">{$t('settings.about')}</div>
     <Card class="pad">
       <div class="kv"><span>{$t('settings.version')}</span><span class="mono">{version}</span></div>
