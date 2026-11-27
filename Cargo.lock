@@ -257,6 +257,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "oo-metrics"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "windows",
+ "winreg",
+]
+
+[[package]]
 name = "oo-sys"
 version = "0.1.0"
 dependencies = [
