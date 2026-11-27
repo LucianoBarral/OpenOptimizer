@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/*"]   # "app" entra na Task 8
+members = ["crates/*", "app"]
 
 [workspace.package]
 version = "0.1.0"
