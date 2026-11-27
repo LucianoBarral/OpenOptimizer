@@ -18,7 +18,7 @@ Subprojeto 2 foi decomposto: **2a Modo Gaming (este)** → 2b medição real de 
 | Inicialização | Tarefa Agendada `OpenOptimizer\GamingMode`, gatilho "ao fazer logon", `RunLevel=Highest` → sem UAC a cada boot. Criada ao ligar o Modo Gaming, removida ao desligar e pelo desinstalador. |
 | Comunicação app ↔ daemon | Arquivos em `%ProgramData%\OpenOptimizer`: `gaming.json` (config, escrita pela UI) e `gaming-status.json` (estado, escrito pelo daemon). |
 | Detecção | Snapshot de processos por nome (`CreateToolhelp32Snapshot`) a cada 3 s — **não abre handle em nenhum processo**. |
-| Fonte da lista de jogos | `HKCU\System\GameConfigStore\Children\*\MatchedExeFullPath` (jogos que o próprio Windows detectou) + bibliotecas Steam (`libraryfolders.vdf` + `appmanifest_*.acf`), Epic (`%ProgramData%\Epic\EpicGamesLauncher\Data\Manifests\*.item`), Riot e Battle.net quando presentes + adicionados manualmente. |
+| Fonte da lista de jogos | `HKCU\System\GameConfigStore\Children\*\MatchedExeFullPath` (jogos que o próprio Windows detectou) + Epic (`LaunchExecutable` exato nos manifestos `.item`) + Steam (`libraryfolders.vdf` + `appmanifest_*.acf`; exe principal = maior `.exe` da pasta, ignorando instaladores/crash/anti-cheat) + adicionados manualmente. Riot e Battle.net ficam cobertos pelo GameConfigStore após a 1ª partida. |
 
 ## 3. Ações do Modo Gaming
 
@@ -91,3 +91,11 @@ Datas RFC 3339 UTC. Comparação de nomes de exe sem diferenciar maiúsculas.
 - [ ] Recuperação após desligar no meio de um jogo restaura o plano.
 - [ ] Desligar o Modo Gaming remove a tarefa agendada e reverte `gaming-global-timer`.
 - [ ] Desinstalar remove a tarefa agendada.
+
+## 10. Adendo do planejamento (2026-11-27)
+
+- **Tarefa agendada via XML** (não `schtasks /SC ONLOGON` simples): o padrão do Windows impede iniciar na bateria e encerra a tarefa após 72 h. O XML define `DisallowStartIfOnBatteries=false`, `StopIfGoingOnBatteries=false`, `ExecutionTimeLimit=PT0S`, `MultipleInstancesPolicy=IgnoreNew`.
+- **Auto-update e desinstalação:** hooks NSIS encerram `oo-gamingd.exe` antes de instalar/desinstalar (o exe ficaria travado), reiniciam a tarefa após instalar e a removem ao desinstalar.
+- **Empacotamento:** o daemon vai como `externalBin` do Tauri (instalado ao lado do app); um script de pré-build compila `oo-gamingd` em release e copia com o sufixo de target exigido pelo Tauri.
+- **"Memória livre"** = páginas Free + Zero (`NtQuerySystemInformation(SystemMemoryListInformation)`), não "disponível" — a standby list conta como disponível e é exatamente o que a limpeza libera.
+- **Tweaks dinâmicos:** `gaming-global-timer` e `ifeo:<exe>` são TweakDefs montados pelo app (não entram no catálogo/pontuação), mas passam pelo motor de reversão e aparecem no Histórico.
