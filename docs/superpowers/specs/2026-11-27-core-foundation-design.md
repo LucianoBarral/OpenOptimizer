@@ -37,7 +37,7 @@ Open Optimizer é um otimizador de PC para Windows 10/11, gratuito e open source
 | Shell | **Tauri 2** | Exe ~10 MB usando o WebView2 do Windows; updater oficial com assinatura |
 | Backend | **Rust** (workspace Cargo), crate `windows` | Acesso nativo a Win32/COM/registro sem runtime |
 | Frontend | **Svelte 5 + Vite + TypeScript**, CSS puro com tokens | Compila para JS sem runtime pesado (~30 KB); animações via CSS |
-| Bindings | **tauri-specta** | Tipos TS gerados das assinaturas Rust; IPC tipado de ponta a ponta |
+| Bindings | **ts-rs** | Tipos TS gerados das structs Rust (estável; tauri-specta ainda é RC) |
 | i18n | Dicionários tipados `pt-BR` e `en` | Idioma detectado do SO, trocável nas configurações |
 | CI/CD | GitHub Actions + `tauri-apps/tauri-action` | Build, assinatura e Release a partir de tag `v*` |
 
@@ -55,7 +55,7 @@ OpenOptimizer/
 ├─ ui/                        # Svelte 5
 │  ├─ src/lib/design/         # tokens.css, componentes (Switch, Button, Card, Ring, Sparkline…)
 │  ├─ src/lib/i18n/           # pt-BR.ts, en.ts
-│  ├─ src/lib/ipc/            # bindings gerados pelo tauri-specta
+│  ├─ src/lib/ipc/            # bindings gerados pelo ts-rs + wrapper tipado de invoke
 │  └─ src/routes/             # overview, performance, history, settings, (em breve: gaming, memory, drivers, apps)
 ├─ .github/workflows/         # ci.yml (PR), release.yml (tag)
 └─ docs/
@@ -70,7 +70,7 @@ OpenOptimizer/
 - **Action** — operação atômica e primitiva sobre o sistema. Cada uma sabe **capturar o estado anterior** e **restaurá-lo**:
   - `RegistrySet { hive, path, name, value }` — captura: valor anterior *ou* "não existia" (revert apaga).
   - `RegistryDelete { … }` — captura: valor completo + tipo.
-  - `ServiceStartType { name, start }` — captura: start type anterior.
+  - `ServiceStartType` — adiado para o subprojeto 3 (nenhum tweak inicial precisa).
   - `PowerSchemeDuplicateAndActivate { source_guid }` — captura: GUID ativo anterior; revert reativa o anterior e remove o duplicado.
 - **Tweak** — unidade que o usuário vê (um toggle). Metadados: `id`, títulos/descrições i18n, `category` (Latência, FPS, Energia, Rede, Entrada, Privacidade…), `risk` (`safe` | `advanced`), `requires_reboot`, `rationale` (justificativa técnica). Possui `detect()` → `Applied | NotApplied | Partial | Unsupported` e uma lista de Actions.
 - **Change** — registro no journal: `{ id (ULID), tweak_id, batch_id, timestamp (RFC 3339 UTC), actions: [{ action, before, after }], status: Pending | Applied | Reverted | Failed }`.
