@@ -4,6 +4,12 @@ Todas as mudanças relevantes do Open Optimizer. Formato baseado em [Keep a Chan
 
 > As notas de cada Release no GitHub são extraídas automaticamente da seção da versão correspondente. Uma versão sem seção aqui **não é publicada**.
 
+## [0.2.1] - 2026-11-27
+
+### Corrigido
+- Barra de rolagem padrão do Windows (branca e grossa) trocada por uma fina e escura, no tema do app.
+- O conteúdo rolava por baixo da faixa invisível do topo e dos botões minimizar/maximizar/fechar; agora a faixa é fixa e o conteúdo esmaece ao chegar nela.
+
 ## [0.2.0] - 2026-11-27
 
 ### Adicionado
