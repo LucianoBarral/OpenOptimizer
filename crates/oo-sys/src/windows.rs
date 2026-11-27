@@ -47,20 +47,19 @@ pub const POWERSHELL: &str = r"WindowsPowerShell\v1.0\powershell.exe";
 
 /// Caminho absoluto de um executável do System32. O app roda elevado: chamar pelo nome
 /// deixaria o Windows procurar na pasta atual e no PATH (binary planting).
-pub fn system_exe(name: &str) -> std::path::PathBuf {
+/// Sem fallback fixo de propósito: "C:\Windows" pode ser criável por usuário comum
+/// quando o Windows está em outra unidade. Se a API falhar, a operação falha.
+pub fn system_exe(name: &str) -> Option<std::path::PathBuf> {
     use ::windows::Win32::System::SystemInformation::GetSystemDirectoryW;
     let mut buf = [0u16; 260];
     let n = unsafe { GetSystemDirectoryW(Some(&mut buf)) } as usize;
-    let dir = if n > 0 && n < buf.len() {
-        String::from_utf16_lossy(&buf[..n])
-    } else {
-        r"C:WindowsSystem32".to_string()
-    };
-    std::path::Path::new(&dir).join(name)
+    (n > 0 && n < buf.len())
+        .then(|| std::path::Path::new(&String::from_utf16_lossy(&buf[..n])).join(name))
 }
 
 fn powercfg(args: &[&str]) -> Result<String, SysError> {
-    let o = Command::new(system_exe("powercfg.exe"))
+    let exe = system_exe("powercfg.exe").ok_or(SysError::NotFound)?;
+    let o = Command::new(exe)
         .args(args)
         .creation_flags(CREATE_NO_WINDOW)
         .output()

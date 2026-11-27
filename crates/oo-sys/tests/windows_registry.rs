@@ -25,9 +25,9 @@ fn power_active_returns_guid() {
 
 #[test]
 fn system_exes_resolve_to_absolute_system32_paths() {
-    let p = oo_sys::windows::system_exe("powercfg.exe");
+    let p = oo_sys::windows::system_exe("powercfg.exe").expect("GetSystemDirectoryW");
     assert!(p.is_absolute(), "{p:?}");
     assert!(p.exists(), "{p:?}");
-    let ps = oo_sys::windows::system_exe(oo_sys::windows::POWERSHELL);
+    let ps = oo_sys::windows::system_exe(oo_sys::windows::POWERSHELL).expect("GetSystemDirectoryW");
     assert!(ps.exists(), "{ps:?}");
 }
