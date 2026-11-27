@@ -73,11 +73,10 @@ button {
   animation-delay: calc(var(--i, 0) * 60ms);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-  }
+/* Controlado por lib/motion.ts (Configurações → Animações), não direto pelo Windows. */
+:root.reduce-motion *,
+:root.reduce-motion *::before,
+:root.reduce-motion *::after {
+  animation: none !important;
+  transition: none !important;
 }

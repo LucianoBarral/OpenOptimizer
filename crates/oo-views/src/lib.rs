@@ -71,6 +71,37 @@ pub struct Progress {
     pub tweak_id: String,
 }
 
+#[derive(Debug, Clone, Serialize, TS)]
+#[ts(export, export_to = "../../../ui/src/lib/ipc/bindings/")]
+pub struct GameView {
+    pub exe: String,
+    pub name: String,
+    pub source: String,
+    pub enabled: bool,
+}
+
+#[derive(Debug, Clone, Serialize, TS)]
+#[ts(export, export_to = "../../../ui/src/lib/ipc/bindings/")]
+pub struct GamingStatusView {
+    /// "Idle" | "Active"
+    pub state: String,
+    pub game: Option<String>,
+    pub since: Option<String>,
+    pub sessions: u32,
+    pub seconds_in_game: f64,
+    pub purges: u32,
+    pub purged_mb: f64,
+}
+
+#[derive(Debug, Clone, Serialize, TS)]
+#[ts(export, export_to = "../../../ui/src/lib/ipc/bindings/")]
+pub struct GamingView {
+    pub enabled: bool,
+    pub games: Vec<GameView>,
+    pub status: GamingStatusView,
+    pub daemon_running: bool,
+}
+
 impl From<&oo_core::OoError> for ErrorView {
     fn from(e: &oo_core::OoError) -> Self {
         use oo_core::OoError::*;

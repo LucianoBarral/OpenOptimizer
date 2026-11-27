@@ -95,6 +95,32 @@ const ptBR = {
   'tray.open': 'Abrir Open Optimizer',
   'tray.optimize': 'Otimizar agora',
   'tray.quit': 'Sair',
+  'gaming.waiting': 'Aguardando um jogo',
+  'gaming.active': 'Ativo',
+  'gaming.off': 'Desligado',
+  'gaming.body':
+    'Ao abrir um jogo da lista: timer 0,5 ms, plano Desempenho Máximo, limpeza de memória quando faltar e prioridade alta. Tudo é desfeito ao fechar o jogo — sem tocar no processo do jogo.',
+  'gaming.games': 'JOGOS',
+  'gaming.scan': 'Procurar jogos',
+  'gaming.add': 'Adicionar jogo',
+  'gaming.empty': 'Nenhum jogo na lista. Use “Procurar jogos” ou adicione o executável.',
+  'gaming.stat.sessions': 'SESSÕES',
+  'gaming.stat.time': 'TEMPO EM JOGO',
+  'gaming.stat.purges': 'LIMPEZAS DE MEMÓRIA',
+  'gaming.stat.freed': 'MEMÓRIA LIBERADA',
+  'gaming.since': 'há {m} min',
+  'gaming.error': 'Não foi possível alterar o Modo Gaming. Execute o app como administrador.',
+  'gaming.source.windows': 'Windows',
+  'gaming.source.steam': 'Steam',
+  'gaming.source.epic': 'Epic',
+  'gaming.source.manual': 'Manual',
+  'tweak.gaming-global-timer.title': 'Timer global para o Modo Gaming',
+  'tweak.ifeo.title': 'Prioridade alta: {exe}',
+  'settings.motion': 'Animações',
+  'settings.motion.always': 'Sempre',
+  'settings.motion.system': 'Seguir o Windows',
+  'settings.motion.hint':
+    '“Seguir o Windows” desliga as animações quando “Efeitos de animação” está desligado no Windows (Acessibilidade → Efeitos visuais).',
 } as const;
 
 export default ptBR;

@@ -7,6 +7,7 @@
   import { api, isErrorView, type ChangeView } from '../lib/ipc/api';
   import { refresh } from '../lib/stores';
   import { t, locale, type MessageKey } from '../lib/i18n';
+  import { tweakTitle } from '../lib/tweakTitle';
 
   let list = $state<ChangeView[]>([]);
   let confirm = $state<null | (() => Promise<void>)>(null);
@@ -83,7 +84,7 @@
       <Card class="list">
         {#each b.items as c (c.id)}
           <div class="row">
-            <span>{$t(k(`tweak.${c.tweak_id}.title`))}</span>
+            <span>{tweakTitle($t, c.tweak_id)}</span>
             <span class="st mono" class:applied={c.status === 'Applied'}>{$t(k(`history.${c.status}`))}</span>
             {#if c.status === 'Applied' || c.status === 'Pending'}
               <Button variant="ghost" onclick={() => undo(c.id)}>{$t('action.undo')}</Button>

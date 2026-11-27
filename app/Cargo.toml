@@ -14,6 +14,9 @@ tauri-plugin-process = "2"
 serde.workspace = true
 serde_json.workspace = true
 oo-views = { path = "../crates/oo-views" }
+oo-gaming = { path = "../crates/oo-gaming" }
+oo-gaming-win = { path = "../crates/oo-gaming-win" }
+tauri-plugin-dialog = "2"
 # Mesmas versões que o wry/Tauri usa por baixo (evita duas cópias do binding).
 webview2-com = "0.39"
 windows = "0.62"

@@ -1,0 +1,13 @@
+[package]
+name = "oo-gamingd"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Open Optimizer - Modo Gaming (processo em segundo plano)"
+
+[dependencies]
+oo-gaming = { path = "../crates/oo-gaming" }
+
+[target.'cfg(windows)'.dependencies]
+oo-gaming-win = { path = "../crates/oo-gaming-win" }
+windows = { version = "0.61", features = ["Win32_Foundation", "Win32_System_Threading"] }

@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { get } from 'svelte/store';
   import { t } from '../i18n';
+  import { reduceMotion } from '../motion';
   let { value }: { value: number } = $props();
 
   const C = 2 * Math.PI * 70; // circunferência (r = 70)
@@ -9,7 +11,7 @@
   $effect(() => {
     const to = value;
     const from = shown;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (get(reduceMotion)) {
       shown = to;
       return;
     }

@@ -8,8 +8,29 @@ pub fn parse_guid(output: &str) -> Option<String> {
         .map(|s| s.to_ascii_lowercase())
 }
 
+/// Todos os GUIDs (minúsculos) de uma saída como a de `powercfg /list`.
+pub fn parse_guids(output: &str) -> Vec<String> {
+    output
+        .split(|c: char| !(c.is_ascii_hexdigit() || c == '-'))
+        .filter(|t| t.len() == 36 && t.matches('-').count() == 4)
+        .map(|s| s.to_ascii_lowercase())
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn parses_all_guids_from_list() {
+        let out = "Existing Power Schemes (* Active)\n-----\nPower Scheme GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (Balanced) *\nPower Scheme GUID: E9A42B02-D5DF-448D-AA00-03F14749EB61  (Ultimate Performance)\n";
+        assert_eq!(
+            super::parse_guids(out),
+            vec![
+                "381b4222-f694-41f0-9685-ff5bb260df2e",
+                "e9a42b02-d5df-448d-aa00-03f14749eb61"
+            ]
+        );
+    }
+
     use super::*;
 
     #[test]

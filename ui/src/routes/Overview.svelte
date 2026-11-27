@@ -8,7 +8,23 @@
   import TweakRow from '../lib/tweakRow/TweakRow.svelte';
   import BusyOverlay from '../lib/brand/BusyOverlay.svelte';
   import { api, type HardwareView, type ChangeView, type MetricsView } from '../lib/ipc/api';
-  import { tweaks, score, refresh, applying, pendingCount, optimizeRequest } from '../lib/stores';
+  import { tweaks, score, refresh, applying, pendingCount, optimizeRequest, route } from '../lib/stores';
+  import type { GamingView } from '../lib/ipc/api';
+
+  let gaming = $state<GamingView | null>(null);
+  let gamingBusy = $state(false);
+  let gamingTick = 0;
+
+  async function toggleGaming(on: boolean) {
+    gamingBusy = true;
+    try {
+      gaming = await api.gamingSetEnabled(on);
+    } catch {
+      gaming = await api.gamingGet();
+    } finally {
+      gamingBusy = false;
+    }
+  }
   import { t, locale } from '../lib/i18n';
   import { formatBytes, formatMs } from '../lib/format';
 
@@ -32,6 +48,8 @@
     if (document.visibilityState !== 'visible') return;
     const x = await api.metrics();
     m = x;
+    // Estado do Modo Gaming a cada 2 s.
+    if (gamingTick++ % 2 === 0) gaming = await api.gamingGet();
     cpu = push(cpu, x.cpu);
     mem = push(mem, x.mem_used / 2 ** 30);
     timer = push(timer, x.timer_ms);
@@ -153,13 +171,27 @@
 
     <Card class="gm rise" style="--i:5">
       <div class="top">
-        <div>
+        <button type="button" class="gm-link" onclick={() => route.set('gaming')}>
           <div class="label">{$t('nav.gaming')}</div>
-          <h4>{$t('soon')}</h4>
-        </div>
-        <Switch size="lg" disabled label={$t('nav.gaming')} />
+          <h4>
+            {#if !gaming?.enabled}{$t('gaming.off')}
+            {:else if gaming.status.state === 'Active'}{$t('gaming.active')}
+            {:else}{$t('gaming.waiting')}{/if}
+          </h4>
+        </button>
+        <Switch
+          size="lg"
+          checked={gaming?.enabled ?? false}
+          disabled={!gaming || gamingBusy}
+          label={$t('nav.gaming')}
+          onchange={toggleGaming}
+        />
       </div>
-      <p>{$t('gaming.soon')}</p>
+      <p>
+        {gaming?.status.state === 'Active'
+          ? (gaming.games.find((x) => x.exe.toLowerCase() === gaming?.status.game?.toLowerCase())?.name ?? gaming.status.game)
+          : $t('gaming.body')}
+      </p>
     </Card>
   </div>
 </div>
@@ -256,6 +288,16 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 16px;
+  }
+  .gm-link {
+    background: none;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+  }
+  .gm-link:hover h4 {
+    color: #fff;
   }
   .top {
     display: flex;

@@ -1,0 +1,20 @@
+[package]
+name = "oo-gaming-win"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+oo-gaming = { path = "../oo-gaming" }
+oo-sys = { path = "../oo-sys" }
+serde.workspace = true
+serde_json.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+winreg = "0.55"
+windows = { version = "0.61", features = [
+  "Win32_Foundation",
+  "Win32_Security",
+  "Win32_System_Diagnostics_ToolHelp",
+  "Win32_System_Threading",
+] }
