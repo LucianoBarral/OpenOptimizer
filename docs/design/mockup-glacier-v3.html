@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@200;300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0C0E; --panel:#0F1013; --card:#121317; --card-h:#15171B;
+  --line:#1C1E23; --line-2:#25282E;
+  --ice:#EEF3F7; --ice-2:#C9D3DC; --mut:#7A828D; --dim:#4B515A;
+  --ok:#8FCFB4;
+  --ease:cubic-bezier(.2,.8,.2,1); --spring:cubic-bezier(.34,1.4,.64,1);
+}
+*{box-sizing:border-box;margin:0}
+body{background:#060607;color:var(--ice);font:13px/1.45 Geist,"Segoe UI Variable",system-ui,sans-serif;-webkit-font-smoothing:antialiased;padding:40px 32px 60px}
+.intro{max-width:1160px;margin:0 auto 24px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.intro h1{font-weight:300;font-size:26px;letter-spacing:-.02em}
+.intro p{color:var(--mut);margin-top:6px;max-width:640px}
+.replay{border:1px solid var(--line-2);background:none;color:var(--ice-2);border-radius:8px;padding:8px 14px;font:inherit;cursor:pointer;transition:border-color .2s,color .2s}
+.replay:hover{border-color:var(--mut);color:var(--ice)}
+.mono{font-family:"Geist Mono",monospace}
+svg{display:block}
+
+/* ── janela ── */
+.win{max-width:1160px;height:700px;margin:0 auto;background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:grid;grid-template-columns:224px 1fr;grid-template-rows:36px 1fr}
+.titlebar{grid-column:1/-1;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid var(--line);color:var(--dim);font-size:11.5px;gap:10px}
+.titlebar .ctl{margin-left:auto;display:flex;gap:18px}
+.titlebar .ctl i{width:10px;height:1px;background:var(--dim);display:block}
+
+/* ── sidebar ── */
+aside{background:var(--panel);border-right:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;position:relative}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px 18px;font-weight:500;font-size:13.5px;letter-spacing:-.01em}
+.mark{width:24px;height:24px;border-radius:7px;background:var(--ice);display:grid;place-items:center}
+.sec{font:500 10px "Geist Mono";letter-spacing:.14em;color:var(--dim);padding:16px 10px 6px}
+.navwrap{position:relative;display:flex;flex-direction:column;gap:1px}
+.ind{position:absolute;left:0;right:0;height:34px;border-radius:7px;background:#17191D;border:1px solid var(--line-2);transition:transform .38s var(--ease);z-index:0}
+.nav{position:relative;z-index:1;display:flex;align-items:center;gap:11px;height:34px;padding:0 10px;border-radius:7px;color:var(--mut);cursor:pointer;transition:color .2s}
+.nav:hover{color:var(--ice-2)}
+.nav.on{color:var(--ice)}
+.nav svg{transition:transform .3s var(--spring)}
+.nav:hover svg{transform:translateX(1px) scale(1.06)}
+.bd{margin-left:auto;font:500 10.5px "Geist Mono";color:var(--ice-2);border:1px solid var(--line-2);border-radius:5px;padding:0 5px;line-height:17px}
+.sfoot{margin-top:auto;border-top:1px solid var(--line);padding:14px 10px 2px;display:flex;align-items:center;gap:9px;color:var(--mut);font-size:12px}
+.live{width:6px;height:6px;border-radius:50%;background:var(--ok);position:relative}
+.live:after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid var(--ok);animation:ping 2.4s var(--ease) infinite}
+@keyframes ping{0%{transform:scale(1);opacity:.8}100%{transform:scale(3);opacity:0}}
+
+/* ── main ── */
+main{padding:28px 32px;display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:auto auto 1fr;gap:16px;overflow:hidden}
+.hd{grid-column:1/-1;display:flex;justify-content:space-between;align-items:flex-end}
+.hd h2{font-weight:300;font-size:26px;letter-spacing:-.025em}
+.hd p{color:var(--mut);margin-top:4px}
+.chip{display:flex;align-items:center;gap:8px;border:1px solid var(--line-2);border-radius:999px;padding:5px 11px 5px 9px;color:var(--ice-2);font-size:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;transition:border-color .25s,background .25s}
+.card:hover{border-color:var(--line-2);background:var(--card-h)}
+
+.hero{padding:24px;display:flex;gap:28px;align-items:center}
+.ring{width:156px;height:156px;position:relative;flex:none}
+.ring .arc{transition:stroke-dashoffset 1.4s var(--ease)}
+.ring .n{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring b{font-weight:200;font-size:50px;letter-spacing:-.045em;line-height:1;font-variant-numeric:tabular-nums}
+.ring small{display:block;font:500 10px "Geist Mono";letter-spacing:.14em;color:var(--dim);margin-top:6px}
+.hero h3{font-weight:400;font-size:17px;letter-spacing:-.01em}
+.hero p{color:var(--mut);margin:6px 0 18px;line-height:1.55;max-width:300px}
+.btn{position:relative;display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;background:var(--ice);color:#0B0C0E;border:0;border-radius:9px;font:500 13px Geist;cursor:pointer;overflow:hidden;transition:transform .15s var(--ease),background .2s}
+.btn:hover{background:#fff}.btn:active{transform:scale(.97)}
+.btn .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(11,12,14,.08);transition:width .3s linear}
+.btn span{position:relative}
+.ghost{height:38px;padding:0 14px;background:none;border:0;color:var(--ice-2);font:inherit;cursor:pointer;border-radius:9px;transition:background .2s}
+.ghost:hover{background:#17191D}
+
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.m{padding:15px 16px 12px}
+.m .k{font:500 10px "Geist Mono";letter-spacing:.14em;color:var(--dim);display:flex;justify-content:space-between}
+.m .v{font-weight:300;font-size:25px;letter-spacing:-.025em;margin:5px 0 8px;font-variant-numeric:tabular-nums}
+.m .v em{font-style:normal;font-size:12px;color:var(--mut);margin-left:3px}
+.spark{height:26px;width:100%;overflow:visible}
+.spark path{fill:none;stroke:var(--ice-2);stroke-width:1.3;stroke-linejoin:round;stroke-linecap:round}
+.spark .area{fill:url(#fade);stroke:none}
+
+.list{grid-column:1;padding:4px 20px}
+.gm{grid-column:2;padding:20px;display:flex;flex-direction:column;justify-content:space-between}
+.row{display:grid;grid-template-columns:20px 1fr auto 36px;gap:14px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}
+.row .t{font-size:13.5px}.row .d{color:var(--mut);font-size:12px;margin-top:1px}
+.row .ic{color:var(--mut);transition:color .3s}
+.row.is-on .ic{color:var(--ice)}
+.tag{font:500 10.5px "Geist Mono";color:var(--mut);letter-spacing:.04em}
+.sw{flex:none;width:34px;height:20px;border-radius:999px;background:#202227;position:relative;cursor:pointer;transition:background .25s var(--ease)}
+.sw:after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--mut);transition:transform .42s var(--spring),background .25s}
+.sw.on{background:var(--ice)}.sw.on:after{transform:translateX(14px);background:#0B0C0E}
+.sw:active:after{width:17px}
+.sw.on:active:after{transform:translateX(11px)}
+
+.gm .k{font:500 10px "Geist Mono";letter-spacing:.14em;color:var(--dim)}
+.gm h4{font-weight:300;font-size:32px;letter-spacing:-.03em;margin:8px 0 4px;transition:opacity .2s}
+.gm p{color:var(--mut);line-height:1.5}
+.gm .top{display:flex;justify-content:space-between;align-items:flex-start}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-size:11.5px;color:var(--ice-2);border:1px solid var(--line-2);border-radius:6px;padding:3px 8px;transition:opacity .3s,transform .3s var(--ease)}
+.gm.off .chips span{opacity:.35}
+.big{width:46px;height:26px}.big:after{width:20px;height:20px}.big.on:after{transform:translateX(20px)}
+
+/* entrada escalonada — só transform/opacity (GPU, sem layout) */
+.in{opacity:0;transform:translateY(8px)}
+.go .in{animation:rise .6s var(--ease) forwards;animation-delay:calc(var(--i)*60ms)}
+@keyframes rise{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.in{opacity:1;transform:none}}
+</style></head><body>
+
+<div class="intro">
+  <div><h1>Glacier, sem brilho e com movimento</h1>
+  <p>Sem glow, blur ou degradê decorativo. A profundidade vem de 3 tons de superfície e linhas de 1px. Ela é interativa: clique em <b>Otimizar</b>, nos toggles, na sidebar e no Modo Gaming. Os números são simulados para o mockup.</p></div>
+  <button class="replay" onclick="replay()">↻ Repetir entrada</button>
+</div>
+
+<div class="win" id="win">
+  <div class="titlebar"><span class="mono">open optimizer</span><div class="ctl"><i></i><i style="width:9px;height:9px;border:1px solid var(--dim);background:none"></i><i style="transform:rotate(45deg)"></i></div></div>
+
+  <aside>
+    <div class="brand in" style="--i:0"><span class="mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B0C0E" stroke-width="2.6" stroke-linecap="round"><path d="M12 2v20M3.5 7l17 10M20.5 7l-17 10"/></svg></span>Open Optimizer</div>
+    <div class="navwrap in" style="--i:1" id="nav">
+      <div class="ind" id="ind"></div>
+      <div class="nav on"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Visão geral</div>
+      <div class="sec">OTIMIZAR</div>
+      <div class="nav"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Desempenho<span class="bd">6</span></div>
+      <div class="nav"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M7 10v4M5 12h4"/><circle cx="16" cy="11" r=".9" fill="currentColor"/><circle cx="18" cy="13" r=".9" fill="currentColor"/></svg>Modo Gaming</div>
+      <div class="nav"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M8 6V3M12 6V3M16 6V3M8 21v-3M12 21v-3M16 21v-3"/></svg>Memória</div>
+      <div class="sec">SISTEMA</div>
+      <div class="nav"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>Drivers<span class="bd">3</span></div>
+      <div class="nav"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="18" cy="16" r="3"/></svg>Apps & Ajustes</div>
+      <div class="nav"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>Histórico</div>
+    </div>
+    <div class="sfoot in" style="--i:2"><span class="live" id="gmDot"></span><span id="gmFoot">Modo Gaming ativo</span><span class="mono" style="margin-left:auto;color:var(--dim)">v0.1.0</span></div>
+  </aside>
+
+  <main>
+    <div class="hd in" style="--i:2"><div><h2>Visão geral</h2><p>Ryzen 7 7800X3D · RTX 4070 · 32 GB DDR5</p></div>
+      <div class="chip"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Snapshot de segurança · 10:42</div></div>
+
+    <div class="card hero in" style="--i:3">
+      <div class="ring">
+        <svg width="156" height="156" viewBox="0 0 156 156">
+          <circle cx="78" cy="78" r="70" fill="none" stroke="var(--line-2)" stroke-width="4"/>
+          <circle class="arc" id="arc" cx="78" cy="78" r="70" fill="none" stroke="var(--ice)" stroke-width="4" stroke-linecap="round" stroke-dasharray="439.8" stroke-dashoffset="439.8" transform="rotate(-90 78 78)"/>
+        </svg>
+        <div class="n"><div><b id="score">0</b><small>PONTUAÇÃO</small></div></div>
+      </div>
+      <div><h3 id="htitle">9 otimizações recomendadas</h3><p id="hsub">Menos latência de entrada e frametime mais estável. Cada mudança é registrada e pode ser desfeita.</p>
+        <button class="btn" id="opt" onclick="optimize()"><i class="fill" id="fill"></i><span id="optTxt">Otimizar</span></button><button class="ghost">Revisar</button></div>
+    </div>
+
+    <div class="metrics in" style="--i:4">
+      <div class="card m"><div class="k">CPU<span id="cpuT">ao vivo</span></div><div class="v"><span id="cpu">14</span><em>%</em></div><svg class="spark" id="s0" viewBox="0 0 100 26" preserveAspectRatio="none"><defs><linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9D3DC" stop-opacity=".12"/><stop offset="1" stop-color="#C9D3DC" stop-opacity="0"/></linearGradient></defs><path class="area"/><path class="ln"/></svg></div>
+      <div class="card m"><div class="k">MEMÓRIA</div><div class="v"><span id="mem">11.2</span><em>GB</em></div><svg class="spark" id="s1" viewBox="0 0 100 26" preserveAspectRatio="none"><path class="area"/><path class="ln"/></svg></div>
+      <div class="card m"><div class="k">TIMER</div><div class="v"><span id="tmr">15.62</span><em>ms</em></div><svg class="spark" id="s2" viewBox="0 0 100 26" preserveAspectRatio="none"><path class="area"/><path class="ln"/></svg></div>
+      <div class="card m"><div class="k">GPU</div><div class="v"><span id="gpu">41</span><em>°C</em></div><svg class="spark" id="s3" viewBox="0 0 100 26" preserveAspectRatio="none"><path class="area"/><path class="ln"/></svg></div>
+    </div>
+
+    <div class="card list in" style="--i:5" id="list">
+      <div class="row"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg><div><div class="t">Resolução de timer 0.5 ms</div><div class="d">Reduz o jitter de agendamento entre frames</div></div><span class="tag">LATÊNCIA</span><span class="sw"></span></div>
+      <div class="row"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg><div><div class="t">Prioridade MMCSS para jogos</div><div class="d">Threads do jogo antes de tarefas em segundo plano</div></div><span class="tag">FPS</span><span class="sw"></span></div>
+      <div class="row"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12.5 12 4l7 8.5M12 4v16"/></svg><div><div class="t">Desativar power throttling</div><div class="d">Evita redução de clock em processos ativos</div></div><span class="tag">ENERGIA</span><span class="sw"></span></div>
+      <div class="row"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h4l2-5 4 10 2-5h8"/></svg><div><div class="t">Desativar Nagle no adaptador ativo</div><div class="d">Envia pacotes pequenos sem esperar agrupamento</div></div><span class="tag">REDE</span><span class="sw"></span></div>
+    </div>
+
+    <div class="card gm in" style="--i:6" id="gm">
+      <div class="top"><div><div class="k">MODO GAMING</div><h4 id="gmState">Ativo</h4><p id="gmTxt">Aguardando um jogo. Aplica e desfaz sozinho ao abrir e fechar.</p></div><span class="sw big on" id="gmSw"></span></div>
+      <div class="chips"><span>Timer 0.5 ms</span><span>MMCSS Games</span><span>Sem throttling</span><span>Standby &lt; 1 GB → limpar</span></div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* Tudo abaixo é só demo de movimento — no app os valores vêm do backend Rust. */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const ARC=439.8;
+
+function setScore(to,dur=1400){
+  const el=$('#score'), from=+el.textContent, t0=performance.now();
+  $('#arc').style.transitionDuration=dur+'ms';
+  $('#arc').style.strokeDashoffset=ARC*(1-to/100);
+  (function f(t){const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(from+(to-from)*e); if(p<1)requestAnimationFrame(f)})(t0);
+}
+
+/* sidebar: indicador desliza (transform → sem reflow) */
+function moveInd(n){$('#ind').style.transform=`translateY(${n.offsetTop}px)`}
+$$('.nav').forEach(n=>n.onclick=()=>{$$('.nav').forEach(x=>x.classList.remove('on'));n.classList.add('on');moveInd(n)});
+
+/* toggles */
+$$('#list .sw').forEach(s=>s.onclick=()=>{s.classList.toggle('on');s.closest('.row').classList.toggle('is-on',s.classList.contains('on'))});
+
+/* modo gaming */
+$('#gmSw').onclick=()=>{const on=$('#gmSw').classList.toggle('on');$('#gm').classList.toggle('off',!on);
+  $('#gmState').textContent=on?'Ativo':'Desligado';$('#gmFoot').textContent=on?'Modo Gaming ativo':'Modo Gaming desligado';
+  $('#gmDot').style.background=on?'var(--ok)':'var(--dim)';
+  $('#gmTxt').textContent=on?'Aguardando um jogo. Aplica e desfaz sozinho ao abrir e fechar.':'Nenhuma mudança automática será feita.'};
+
+/* otimizar: aplica um por um */
+let busy=false;
+async function optimize(){
+  if(busy)return;busy=true;const rows=$$('#list .row'), sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  for(let i=0;i<rows.length;i++){
+    $('#optTxt').textContent=`Aplicando ${i+1}/${rows.length}`;$('#fill').style.width=((i+1)/rows.length*100)+'%';
+    await sleep(420);const s=rows[i].querySelector('.sw');s.classList.add('on');rows[i].classList.add('is-on');
+  }
+  timerTarget=0.50;setScore(94,1100);await sleep(500);
+  $('#optTxt').textContent='Otimizado';$('#htitle').textContent='Tudo em dia';
+  $('#hsub').textContent='4 mudanças aplicadas agora. Veja ou desfaça em Histórico.';busy=false;
+}
+
+/* sparklines ao vivo */
+const N=24, series=[[],[],[],[]], targ=[14,11.2,15.62,41]; let timerTarget=15.62;
+for(let k=0;k<4;k++)for(let i=0;i<N;i++)series[k].push(targ[k]);
+function path(a,lo,hi){const p=a.map((v,i)=>[(i/(N-1))*100,24-((v-lo)/(hi-lo))*20]);
+  const d='M'+p.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' L');return[d,d+' L100 26 L0 26Z']}
+function draw(){[[0,0,40],[1,8,16],[2,0,17],[3,30,60]].forEach(([k,lo,hi])=>{
+  const [d,a]=path(series[k],lo,hi);const s=$('#s'+k);s.querySelector('.ln').setAttribute('d',d);s.querySelector('.area').setAttribute('d',a)})}
+setInterval(()=>{
+  const n=[Math.max(3,series[0].at(-1)+(Math.random()-.5)*6),Math.max(9,Math.min(14,series[1].at(-1)+(Math.random()-.5)*.25)),
+           series[2].at(-1)+(timerTarget-series[2].at(-1))*.35,Math.max(36,Math.min(55,series[3].at(-1)+(Math.random()-.5)*1.6))];
+  n.forEach((v,k)=>{series[k].push(v);series[k].shift()});
+  $('#cpu').textContent=Math.round(n[0]);$('#mem').textContent=n[1].toFixed(1);$('#tmr').textContent=n[2].toFixed(2);$('#gpu').textContent=Math.round(n[3]);draw();
+},900);
+
+function replay(){const w=$('#win');w.classList.remove('go');void w.offsetWidth;w.classList.add('go');
+  $('#score').textContent='0';$('#arc').style.transitionDuration='0ms';$('#arc').style.strokeDashoffset=ARC;
+  setTimeout(()=>setScore(72),350)}
+draw();moveInd($('.nav.on'));requestAnimationFrame(()=>replay());
+</script>
+</body></html>

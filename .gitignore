@@ -1,0 +1,9 @@
+.superpowers/
+.playwright-mcp/
+node_modules/
+target/
+dist/
+ui/dist/
+*.log
+.env
+*.key
