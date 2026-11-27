@@ -2,9 +2,19 @@
   import { onMount } from 'svelte';
   import { getVersion } from '@tauri-apps/api/app';
   import Card from '../lib/design/Card.svelte';
+  import Button from '../lib/design/Button.svelte';
+  import { checkForUpdate } from '../lib/update';
   import { t, locale, setLocale, type Locale } from '../lib/i18n';
 
   let version = $state('');
+  let checking = $state(false);
+  let result = $state<'available' | 'none' | 'error' | null>(null);
+
+  async function check() {
+    checking = true;
+    result = await checkForUpdate();
+    checking = false;
+  }
   const langs: { id: Locale; name: string }[] = [
     { id: 'pt-BR', name: 'Português (Brasil)' },
     { id: 'en', name: 'English' },
@@ -32,6 +42,12 @@
     <div class="label">{$t('settings.about')}</div>
     <Card class="pad">
       <div class="kv"><span>{$t('settings.version')}</span><span class="mono">{version}</span></div>
+      <div class="kv upd">
+        <span>
+          {#if result === 'none'}{$t('update.upToDate')}{:else if result === 'error'}{$t('update.error')}{/if}
+        </span>
+        <Button variant="ghost" disabled={checking} onclick={check}>{$t('update.check')}</Button>
+      </div>
       <div class="kv">
         <span>{$t('settings.repo')}</span>
         <a href="https://github.com/LucianoBarral/OpenOptimizer" target="_blank" rel="noreferrer">github.com/LucianoBarral/OpenOptimizer</a>
