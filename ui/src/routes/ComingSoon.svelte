@@ -10,7 +10,7 @@
 
 <style>
   .page {
-    padding: 28px 32px;
+    padding: 4px 32px 28px;
   }
   h2 {
     margin: 0;

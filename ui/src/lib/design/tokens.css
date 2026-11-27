@@ -46,6 +46,24 @@ button {
   color: inherit;
 }
 
+/* Barra de rolagem fina e escura (a padrão do Windows é branca e grossa). */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: 999px;
+  border: 3px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3e46;
+}
+
 .mono {
   font-family: var(--mono);
 }

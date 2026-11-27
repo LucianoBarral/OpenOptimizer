@@ -113,7 +113,7 @@
 
 <style>
   .page {
-    padding: 28px 32px;
+    padding: 4px 32px 28px;
     height: 100%;
     overflow: auto;
   }
@@ -121,7 +121,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-right: 110px;
+
   }
   h2 {
     margin: 0;
