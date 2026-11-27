@@ -1,9 +1,11 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod commands;
+mod memory;
 mod restore;
 
 use std::path::PathBuf;
 use std::sync::Mutex;
+use tauri::Manager;
 
 fn data_dir() -> PathBuf {
     PathBuf::from(std::env::var("ProgramData").unwrap_or_else(|_| r"C:\ProgramData".into()))
@@ -36,6 +38,15 @@ fn main() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
         .manage(state)
+        // Minimizado → WebView2 em modo de memória baixa; restaurado → normal.
+        .on_window_event(|window, event| {
+            if let tauri::WindowEvent::Resized(_) = event {
+                let minimized = window.is_minimized().unwrap_or(false);
+                if let Some(w) = window.app_handle().get_webview_window(window.label()) {
+                    memory::set_low_memory(&w, minimized);
+                }
+            }
+        })
         .invoke_handler(tauri::generate_handler![
             commands::hardware,
             commands::metrics,
