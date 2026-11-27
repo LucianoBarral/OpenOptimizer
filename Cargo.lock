@@ -2396,6 +2396,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "oo-gaming"
+version = "0.1.2"
+dependencies = [
+ "chrono",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "oo-metrics"
 version = "0.1.2"
 dependencies = [
