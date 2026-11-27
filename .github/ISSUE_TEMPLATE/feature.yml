@@ -1,0 +1,17 @@
+name: Sugestão
+description: Uma ideia de otimização ou recurso
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: O que você sugere
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Que ganho real isso traz
+      description: Para otimizações, descreva o efeito técnico e, se possível, como medir (o projeto não aceita placebo).
+    validations:
+      required: true

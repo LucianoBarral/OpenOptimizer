@@ -24,6 +24,18 @@ jobs:
             throw "tag ${{ github.ref_name }} difere da versão v$($conf.version) (rode scripts/bump-version.mjs)"
           }
 
+      # Notas do Release = seção da versão no CHANGELOG.md. Sem seção, não publica.
+      - name: Notas da versão (CHANGELOG)
+        id: notes
+        shell: pwsh
+        run: |
+          $v = "${{ github.ref_name }}".TrimStart('v')
+          $text = Get-Content CHANGELOG.md -Raw
+          $m = [regex]::Match($text, "(?ms)^## \[$([regex]::Escape($v))\][^\n]*\n(.*?)(?=^## \[|^\[[0-9])")
+          if (-not $m.Success -or -not $m.Groups[1].Value.Trim()) { throw "CHANGELOG.md não tem a seção [$v]" }
+          $body = $m.Groups[1].Value.Trim() + "`n`n**Instalar:** baixe o ``setup.exe`` abaixo. Quem já usa recebe a atualização automaticamente."
+          "notes<<OO_EOF`n$body`nOO_EOF" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - uses: actions/setup-node@v4
@@ -42,7 +54,7 @@ jobs:
           projectPath: app
           tagName: ${{ github.ref_name }}
           releaseName: Open Optimizer ${{ github.ref_name }}
-          releaseBody: Veja as mudanças nos commits desta versão.
+          releaseBody: ${{ steps.notes.outputs.notes }}
           releaseDraft: false
           includeUpdaterJson: true
 
