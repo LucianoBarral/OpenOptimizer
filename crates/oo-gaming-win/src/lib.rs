@@ -12,7 +12,11 @@ pub use winsys::WinGamingSys;
 use std::path::PathBuf;
 
 /// `%ProgramData%\OpenOptimizer` (mesmo diretório do journal do app).
+/// `OO_DATA_DIR` sobrescreve, só para desenvolvimento e testes.
 pub fn data_dir() -> PathBuf {
+    if let Ok(d) = std::env::var("OO_DATA_DIR") {
+        return PathBuf::from(d);
+    }
     PathBuf::from(std::env::var("ProgramData").unwrap_or_else(|_| r"C:\ProgramData".into()))
         .join("OpenOptimizer")
 }

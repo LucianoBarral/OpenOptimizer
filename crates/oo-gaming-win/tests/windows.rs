@@ -10,7 +10,10 @@ fn sys() -> WinGamingSys {
 fn snapshot_sees_this_test_process_without_handles() {
     let me = std::env::current_exe().unwrap();
     let name = me.file_name().unwrap().to_str().unwrap().to_lowercase();
-    assert!(sys().running_exes().contains(&name), "{name} não apareceu no snapshot");
+    assert!(
+        sys().running_exes().contains(&name),
+        "{name} não apareceu no snapshot"
+    );
 }
 
 #[test]

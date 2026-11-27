@@ -2417,6 +2417,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "oo-gamingd"
+version = "0.1.2"
+dependencies = [
+ "oo-gaming",
+ "oo-gaming-win",
+ "windows 0.61.3",
+]
+
+[[package]]
 name = "oo-metrics"
 version = "0.1.2"
 dependencies = [
