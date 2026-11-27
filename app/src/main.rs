@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod commands;
 mod gaming;
+mod icon;
 mod memory;
 mod restore;
 mod tray;
@@ -43,6 +44,9 @@ fn main() {
         .manage(state)
         .setup(|app| {
             tray::build(app)?;
+            if let Some(w) = app.get_webview_window("main") {
+                icon::set_big_icon(&w);
+            }
             Ok(())
         })
         .on_window_event(|window, event| match event {

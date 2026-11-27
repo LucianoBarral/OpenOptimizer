@@ -70,14 +70,16 @@
     <WindowControls />
     <UpdateBanner />
     <!-- {#key} remonta a tela ao trocar de rota, reexecutando a entrada escalonada. -->
-    {#key $route}
-      {#if $route === 'overview'}<Overview />
-      {:else if $route === 'performance'}<Performance />
-      {:else if $route === 'history'}<History />
-      {:else if $route === 'settings'}<Settings />
-      {:else if $route === 'gaming'}<Gaming />
-      {:else}<ComingSoon title={soon[$route] ?? 'soon'} />{/if}
-    {/key}
+    <div class="view">
+      {#key $route}
+        {#if $route === 'overview'}<Overview />
+        {:else if $route === 'performance'}<Performance />
+        {:else if $route === 'history'}<History />
+        {:else if $route === 'settings'}<Settings />
+        {:else if $route === 'gaming'}<Gaming />
+        {:else}<ComingSoon title={soon[$route] ?? 'soon'} />{/if}
+      {/key}
+    </div>
   </main>
 </div>
 
@@ -100,10 +102,21 @@
     grid-template-columns: 224px 1fr;
     height: 100vh;
   }
+  /* Coluna: faixa do topo (fixa) → banner de atualização → tela (só ela rola). */
   main {
     position: relative;
     min-width: 0;
     min-height: 0;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .view {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    /* O conteúdo esmaece ao chegar na faixa do topo, em vez de ser cortado seco. */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14px);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 14px);
   }
 </style>
