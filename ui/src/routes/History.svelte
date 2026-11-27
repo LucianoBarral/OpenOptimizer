@@ -3,6 +3,7 @@
   import Card from '../lib/design/Card.svelte';
   import Button from '../lib/design/Button.svelte';
   import ConfirmDialog from '../lib/shell/ConfirmDialog.svelte';
+  import BusyOverlay from '../lib/brand/BusyOverlay.svelte';
   import { api, isErrorView, type ChangeView } from '../lib/ipc/api';
   import { refresh } from '../lib/stores';
   import { t, locale, type MessageKey } from '../lib/i18n';
@@ -40,15 +41,25 @@
     await load();
   }
 
+  let restoring = $state(false);
+  const minShow = () => new Promise((r) => setTimeout(r, 1200));
+
   async function undoAll() {
-    const errs = await api.revertAll();
-    if (errs.some((e) => e.kind === 'Conflict')) {
-      confirm = async () => {
-        await api.revertAll(true);
-      };
-      return;
+    restoring = true;
+    try {
+      const [errs] = await Promise.all([api.revertAll(), minShow()]);
+      if (errs.some((e) => e.kind === 'Conflict')) {
+        confirm = async () => {
+          restoring = true;
+          await Promise.all([api.revertAll(true), minShow()]);
+          restoring = false;
+        };
+        return;
+      }
+      await load();
+    } finally {
+      restoring = false;
     }
-    await load();
   }
 
   onMount(load);
@@ -83,6 +94,8 @@
     </section>
   {/each}
 </div>
+
+{#if restoring}<BusyOverlay label={$t('busy.restoring')} />{/if}
 
 {#if confirm}
   <ConfirmDialog

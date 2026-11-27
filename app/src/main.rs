@@ -2,10 +2,11 @@
 mod commands;
 mod memory;
 mod restore;
+mod tray;
 
 use std::path::PathBuf;
 use std::sync::Mutex;
-use tauri::Manager;
+use tauri::{Emitter, Manager};
 
 fn data_dir() -> PathBuf {
     PathBuf::from(std::env::var("ProgramData").unwrap_or_else(|_| r"C:\ProgramData".into()))
@@ -38,14 +39,24 @@ fn main() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
         .manage(state)
-        // Minimizado → WebView2 em modo de memória baixa; restaurado → normal.
-        .on_window_event(|window, event| {
-            if let tauri::WindowEvent::Resized(_) = event {
+        .setup(|app| {
+            tray::build(app)?;
+            Ok(())
+        })
+        .on_window_event(|window, event| match event {
+            // Minimizado → WebView2 em modo de memória baixa; restaurado → normal.
+            tauri::WindowEvent::Resized(_) => {
                 let minimized = window.is_minimized().unwrap_or(false);
                 if let Some(w) = window.app_handle().get_webview_window(window.label()) {
                     memory::set_low_memory(&w, minimized);
                 }
             }
+            // O X não fecha direto: a UI decide (bandeja ou sair), conforme a preferência do usuário.
+            tauri::WindowEvent::CloseRequested { api, .. } => {
+                api.prevent_close();
+                let _ = window.emit("close-requested", ());
+            }
+            _ => {}
         })
         .invoke_handler(tauri::generate_handler![
             commands::hardware,
@@ -57,7 +68,11 @@ fn main() {
             commands::revert_change,
             commands::revert_all,
             commands::history,
-            commands::pending
+            commands::pending,
+            tray::set_tray_labels,
+            tray::hide_to_tray,
+            tray::show_main,
+            tray::quit_app
         ])
         .run(tauri::generate_context!())
         .expect("falha ao iniciar o Tauri");

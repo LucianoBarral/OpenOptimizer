@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { getVersion } from '@tauri-apps/api/app';
+  import LogoMark from '../brand/LogoMark.svelte';
   import { route, tweaks, pendingCount, type Route } from '../stores';
   import { t, type MessageKey } from '../i18n';
 
@@ -54,11 +55,9 @@
 {/snippet}
 
 <aside>
-  <div class="brand">
-    <span class="mark">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B0C0E" stroke-width="2.6" stroke-linecap="round"><path d="M12 2v20M3.5 7l17 10M20.5 7l-17 10" /></svg>
-    </span>
-    Open Optimizer
+  <div class="brand" data-tauri-drag-region>
+    <LogoMark size={30} />
+    <span data-tauri-drag-region>Open Optimizer</span>
   </div>
   <nav>
     <div class="ind" style="transform: translateY({y}px)"></div>
@@ -89,14 +88,6 @@
     font-weight: 500;
     font-size: 13.5px;
     letter-spacing: -0.01em;
-  }
-  .mark {
-    width: 24px;
-    height: 24px;
-    border-radius: 7px;
-    background: var(--ice);
-    display: grid;
-    place-items: center;
   }
   nav {
     position: relative;

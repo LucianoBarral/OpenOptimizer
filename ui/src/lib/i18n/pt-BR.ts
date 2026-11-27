@@ -81,6 +81,20 @@ const ptBR = {
   'err.Win32': 'O Windows recusou a operação (código {code}).',
   'err.Internal': 'Erro interno. Veja os logs.',
   'gaming.soon': 'Ativação automática ao abrir jogos chega numa próxima atualização.',
+  'busy.optimizing': 'Otimizando',
+  'busy.restoring': 'Restaurando',
+  'close.title': 'Fechar o Open Optimizer?',
+  'close.body': 'Ele pode continuar na bandeja do sistema, perto do relógio, usando pouca memória.',
+  'close.tray': 'Minimizar para a bandeja',
+  'close.quit': 'Sair',
+  'close.remember': 'Lembrar minha escolha',
+  'settings.onClose': 'Ao fechar a janela',
+  'settings.onClose.ask': 'Perguntar',
+  'settings.onClose.tray': 'Bandeja',
+  'settings.onClose.quit': 'Sair',
+  'tray.open': 'Abrir Open Optimizer',
+  'tray.optimize': 'Otimizar agora',
+  'tray.quit': 'Sair',
 } as const;
 
 export default ptBR;

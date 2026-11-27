@@ -22,7 +22,7 @@
 {#if $available}
   <div class="banner rise">
     <div class="row">
-      <span class="label">{$t('update.available', { v: $available.version })}</span>
+      <span class="msg">{$t('update.available', { v: $available.version })}</span>
       <div class="act">
         {#if $available.body}<Button variant="ghost" onclick={() => (notes = !notes)}>{$t('update.notes')}</Button>{/if}
         <!-- Nunca atualiza no meio de um lote de tweaks. -->
@@ -47,7 +47,7 @@
     justify-content: space-between;
     gap: 12px;
   }
-  .label {
+  .msg {
     color: var(--ice-2);
   }
   .act {

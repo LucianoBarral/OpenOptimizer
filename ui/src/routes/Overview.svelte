@@ -6,8 +6,9 @@
   import Switch from '../lib/design/Switch.svelte';
   import Sparkline from '../lib/design/Sparkline.svelte';
   import TweakRow from '../lib/tweakRow/TweakRow.svelte';
+  import BusyOverlay from '../lib/brand/BusyOverlay.svelte';
   import { api, type HardwareView, type ChangeView, type MetricsView } from '../lib/ipc/api';
-  import { tweaks, score, refresh, applying, pendingCount } from '../lib/stores';
+  import { tweaks, score, refresh, applying, pendingCount, optimizeRequest } from '../lib/stores';
   import { t, locale } from '../lib/i18n';
   import { formatBytes, formatMs } from '../lib/format';
 
@@ -36,10 +37,15 @@
     timer = push(timer, x.timer_ms);
   }
 
+  let loaded = $state(false);
+  let busy = $state(false);
+  let busySub = $state('');
+
   onMount(async () => {
     hw = await api.hardware();
     await refresh();
     pend = await api.pending();
+    loaded = true;
     await tick();
     timerId = setInterval(tick, 1000);
   });
@@ -48,21 +54,37 @@
   const toApply = $derived($tweaks.filter((x) => x.state === 'NotApplied' || x.state === 'Partial'));
   const n = $derived(pendingCount($tweaks));
 
+  // "Otimizar agora" pedido pela bandeja (pode chegar antes desta tela montar).
+  $effect(() => {
+    if ($optimizeRequest > 0 && loaded && !$applying) {
+      optimizeRequest.set(0);
+      if (n > 0) optimize();
+    }
+  });
+
   async function optimize() {
     applying.set(true);
+    busy = true;
+    busySub = '';
     progress = 0;
     doneN = null;
     const un = await api.onProgress((p) => {
       progress = p.index / p.total;
       label = $t('action.applying', { i: p.index, n: p.total });
+      busySub = `${p.index}/${p.total}`;
     });
     try {
-      const r = await api.applyTweaks(toApply.map((x) => x.id));
+      // Aplicar leva milissegundos; a animação fica no mínimo ~1,4 s para ser legível.
+      const [r] = await Promise.all([
+        api.applyTweaks(toApply.map((x) => x.id)),
+        new Promise((res) => setTimeout(res, 1400)),
+      ]);
       doneN = r.results.filter((x) => x.ok).length;
       restoreSkipped = !r.restore_point;
     } finally {
       un();
       applying.set(false);
+      busy = false;
       label = '';
       await refresh();
     }
@@ -141,6 +163,8 @@
     </Card>
   </div>
 </div>
+
+{#if busy}<BusyOverlay label={$t('busy.optimizing')} sub={busySub} />{/if}
 
 <style>
   .page {

@@ -21,6 +21,12 @@ export const api = {
   history: () => invoke<ChangeView[]>('history'),
   pending: () => invoke<ChangeView[]>('pending'),
   onProgress: (cb: (p: Progress) => void) => listen<Progress>('apply-progress', (e) => cb(e.payload)),
+  setTrayLabels: (open: string, optimize: string, quit: string) =>
+    invoke<void>('set_tray_labels', { open, optimize, quit }),
+  hideToTray: () => invoke<void>('hide_to_tray'),
+  quitApp: () => invoke<void>('quit_app'),
+  onCloseRequested: (cb: () => void) => listen('close-requested', () => cb()),
+  onTrayOptimize: (cb: () => void) => listen('tray-optimize', () => cb()),
 };
 
 export const isErrorView = (e: unknown): e is ErrorView => typeof e === 'object' && e !== null && 'kind' in e;

@@ -8,6 +8,8 @@ export const tweaks = writable<TweakView[]>([]);
 export const score = writable(0);
 /** true durante um lote de tweaks: bloqueia a instalação de updates no meio. */
 export const applying = writable(false);
+/** Incrementado quando o menu da bandeja pede "Otimizar agora"; a Visão geral reage. */
+export const optimizeRequest = writable(0);
 
 export async function refresh() {
   const [t, s] = await Promise.all([api.tweaks(), api.score()]);

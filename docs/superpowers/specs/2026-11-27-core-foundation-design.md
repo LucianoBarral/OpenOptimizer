@@ -163,5 +163,5 @@ Assinatura Authenticode (remover aviso do SmartScreen no primeiro download) fica
 - [ ] Auto-update v0.1.0 → v0.1.1 observado de ponta a ponta.
 - [x] Instalador ≤ 15 MB (medido: 2,0 MB).
 - [x] CPU em repouso ≈ 0% (medido: 0,1–0,26% com métricas ao vivo).
-- [ ] RAM: janela aberta ≤ 120 MB (medido v0.1.0: 108 MB); minimizada — medir na v0.1.1 com `scripts/measure-memory.ps1`.
+- [x] RAM (v0.1.1, `scripts/measure-memory.ps1`): janela aberta 111,2 MB (meta ≤ 120 MB); **minimizada 23,5 MB** (−79%, WebView2 em memória baixa); processo Rust 5,8 MB.
 - [ ] Interface em pt-BR e en; `prefers-reduced-motion` respeitado.

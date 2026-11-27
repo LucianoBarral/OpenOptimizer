@@ -83,6 +83,20 @@ const en: Record<MessageKey, string> = {
   'err.Win32': 'Windows refused the operation (code {code}).',
   'err.Internal': 'Internal error. Check the logs.',
   'gaming.soon': 'Automatic activation when launching games arrives in an upcoming update.',
+  'busy.optimizing': 'Optimizing',
+  'busy.restoring': 'Restoring',
+  'close.title': 'Close Open Optimizer?',
+  'close.body': 'It can keep running in the system tray, next to the clock, using little memory.',
+  'close.tray': 'Minimize to tray',
+  'close.quit': 'Quit',
+  'close.remember': 'Remember my choice',
+  'settings.onClose': 'When closing the window',
+  'settings.onClose.ask': 'Ask',
+  'settings.onClose.tray': 'Tray',
+  'settings.onClose.quit': 'Quit',
+  'tray.open': 'Open Open Optimizer',
+  'tray.optimize': 'Optimize now',
+  'tray.quit': 'Quit',
 };
 
 export default en;
