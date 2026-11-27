@@ -12,7 +12,7 @@
 <style>
   .busy {
     position: fixed;
-    inset: 36px 0 0 0;
+    inset: 0;
     z-index: 60;
     display: grid;
     place-content: center;

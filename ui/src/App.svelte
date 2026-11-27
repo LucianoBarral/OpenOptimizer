@@ -1,5 +1,5 @@
 <script lang="ts">
-  import TitleBar from './lib/shell/TitleBar.svelte';
+  import WindowControls from './lib/shell/WindowControls.svelte';
   import Sidebar from './lib/shell/Sidebar.svelte';
   import Overview from './routes/Overview.svelte';
   import Performance from './routes/Performance.svelte';
@@ -62,9 +62,9 @@
 </script>
 
 <div class="app">
-  <TitleBar />
   <Sidebar />
   <main>
+    <WindowControls />
     <UpdateBanner />
     <!-- {#key} remonta a tela ao trocar de rota, reexecutando a entrada escalonada. -->
     {#key $route}
@@ -93,10 +93,11 @@
 <style>
   .app {
     display: grid;
-    grid-template: 36px 1fr / 224px 1fr;
+    grid-template-columns: 224px 1fr;
     height: 100vh;
   }
   main {
+    position: relative;
     min-width: 0;
     min-height: 0;
     overflow: hidden;

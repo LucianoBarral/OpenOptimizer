@@ -1,5 +1,4 @@
-@import '@fontsource-variable/geist';
-@import '@fontsource-variable/geist-mono';
+@import '@fontsource-variable/inter';
 
 :root {
   --bg: #0b0c0e;
@@ -16,8 +15,10 @@
   --err: #e5a5a5;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
-  --font: 'Geist Variable', 'Segoe UI Variable', system-ui, sans-serif;
-  --mono: 'Geist Mono Variable', ui-monospace, monospace;
+  /* Inter em tudo (escolha do usuário). "--mono" vira Inter com números tabulares,
+     para etiquetas e valores alinharem sem trazer uma segunda família de fonte. */
+  --font: 'Inter Variable', 'Segoe UI Variable', system-ui, sans-serif;
+  --mono: 'Inter Variable', 'Segoe UI Variable', system-ui, sans-serif;
 }
 
 *,
@@ -33,6 +34,8 @@ body {
   background: var(--bg);
   color: var(--ice);
   font: 13px/1.45 var(--font);
+  font-feature-settings: 'cv11', 'ss01'; /* "a" de um andar e dígitos mais abertos da Inter */
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   user-select: none;
   overflow: hidden;
