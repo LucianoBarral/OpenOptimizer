@@ -21,7 +21,7 @@ Open Optimizer é um otimizador de PC para Windows 10/11, gratuito e open source
 2. **Zero risco de ban.** O app **nunca** abre handle, injeta, lê ou escreve memória de processo de jogo. Atua apenas no SO via APIs públicas (registro, serviços, energia, MMCSS, rede, prioridade via `SetPriorityClass` do próprio Windows).
 3. **Sem placebo.** Cada tweak tem justificativa técnica escrita no catálogo; o que não tem efeito mensurável não entra.
 4. **Real, não simulado.** Todo número na interface vem de leitura real do sistema. Nada de valores fixos.
-5. **Leve.** Instalador ≤ 15 MB, RAM em repouso ≤ 60 MB, CPU em repouso ≈ 0%.
+5. **Leve.** Instalador ≤ 15 MB, CPU em repouso ≈ 0%. RAM: o processo Rust ≤ 15 MB; o total com WebView2 tem piso de ~100 MB com a janela aberta (medido: 108 MB, Rust 7 MB) — por isso, minimizado, o WebView2 entra em modo de memória baixa. *(Meta original de 60 MB não tinha base em medição e foi corrigida em 2026-11-27.)*
 6. **Driver updater sem engenharia reversa de terceiros.** Não usamos a API privada do Driver Booster (ToS + risco de segurança); usamos WUA (drivers assinados pela Microsoft) e lookups públicos de fabricantes de GPU.
 
 ## 2. Escopo deste subprojeto
@@ -161,5 +161,7 @@ Assinatura Authenticode (remover aviso do SmartScreen no primeiro download) fica
 - [ ] Os 5 tweaks aplicam e revertem no Windows real com valores conferidos.
 - [ ] Recuperação de journal `Pending` funciona após matar o processo no meio de um batch.
 - [ ] Auto-update v0.1.0 → v0.1.1 observado de ponta a ponta.
-- [ ] Instalador ≤ 15 MB; RAM em repouso ≤ 60 MB.
+- [x] Instalador ≤ 15 MB (medido: 2,0 MB).
+- [x] CPU em repouso ≈ 0% (medido: 0,1–0,26% com métricas ao vivo).
+- [ ] RAM: janela aberta ≤ 120 MB (medido v0.1.0: 108 MB); minimizada — medir na v0.1.1 com `scripts/measure-memory.ps1`.
 - [ ] Interface em pt-BR e en; `prefers-reduced-motion` respeitado.
