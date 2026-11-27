@@ -1,0 +1,46 @@
+# Catálogo declarativo de tweaks.
+# `rationale` é obrigatório: justificativa técnica (exibida na UI via chave i18n tweak.<id>.why).
+# `weight` define quanto o tweak pesa na pontuação de desempenho (0–100) da Visão geral.
+
+[[tweak]]
+id = "power-throttling-off"
+category = "energy"
+weight = 2
+rationale = "Power Throttling reduz a frequência de processos que o Windows considera em segundo plano; jogos sem foco e launchers sofrem quedas."
+set = [
+  { hive = "HKLM", path = 'SYSTEM\CurrentControlSet\Control\Power\PowerThrottling', name = "PowerThrottlingOff", dword = 1 },
+]
+
+[[tweak]]
+id = "mmcss-games"
+category = "fps"
+weight = 3
+rationale = "MMCSS reserva CPU para multimídia; SystemResponsiveness=10 deixa só 10% para segundo plano e a tarefa Games ganha prioridade alta de CPU e GPU."
+set = [
+  { hive = "HKLM", path = 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile', name = "SystemResponsiveness", dword = 10 },
+  { hive = "HKLM", path = 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games', name = "GPU Priority", dword = 8 },
+  { hive = "HKLM", path = 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games', name = "Priority", dword = 6 },
+  { hive = "HKLM", path = 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games', name = "Scheduling Category", sz = "High" },
+]
+
+[[tweak]]
+id = "game-dvr-off"
+category = "fps"
+weight = 3
+rationale = "A gravação em segundo plano do Xbox Game Bar mantém um encoder de vídeo ativo durante o jogo, consumindo GPU e VRAM."
+set = [
+  { hive = "HKCU", path = 'System\GameConfigStore', name = "GameDVR_Enabled", dword = 0 },
+  { hive = "HKCU", path = 'Software\Microsoft\Windows\CurrentVersion\GameDVR', name = "AppCaptureEnabled", dword = 0 },
+]
+
+[[tweak]]
+id = "mouse-accel-off"
+category = "input"
+weight = 2
+post = "refresh_mouse"
+rationale = "Aprimorar precisão do ponteiro aplica curva de aceleração: o mesmo movimento físico gera distâncias diferentes conforme a velocidade."
+set = [
+  { hive = "HKCU", path = 'Control Panel\Mouse', name = "MouseSpeed", sz = "0" },
+  { hive = "HKCU", path = 'Control Panel\Mouse', name = "MouseThreshold1", sz = "0" },
+  { hive = "HKCU", path = 'Control Panel\Mouse', name = "MouseThreshold2", sz = "0" },
+]

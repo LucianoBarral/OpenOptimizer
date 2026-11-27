@@ -1,0 +1,11 @@
+[package]
+name = "oo-catalog"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+oo-core = { path = "../oo-core" }
+oo-sys = { path = "../oo-sys" }
+serde.workspace = true
+toml = "0.8"

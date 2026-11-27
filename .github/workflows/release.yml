@@ -1,0 +1,51 @@
+name: Release
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Bloqueia release sem chave pública real: sem ela o app não aceitaria nenhum update.
+      - name: Verificar chave do updater e versão
+        shell: pwsh
+        run: |
+          $conf = Get-Content app/tauri.conf.json -Raw | ConvertFrom-Json
+          if ($conf.plugins.updater.pubkey -like 'PREENCHIDO*' -or $conf.plugins.updater.pubkey.Length -lt 40) {
+            throw 'pubkey do updater não configurada em app/tauri.conf.json'
+          }
+          if ("v$($conf.version)" -ne "${{ github.ref_name }}") {
+            throw "tag ${{ github.ref_name }} difere da versão v$($conf.version) (rode scripts/bump-version.mjs)"
+          }
+
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm ci
+        working-directory: ui
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          projectPath: app
+          tagName: ${{ github.ref_name }}
+          releaseName: Open Optimizer ${{ github.ref_name }}
+          releaseBody: Veja as mudanças nos commits desta versão.
+          releaseDraft: false
+          includeUpdaterJson: true
+
+      - name: Tamanho do instalador
+        shell: pwsh
+        run: Get-ChildItem -Recurse target/release/bundle/nsis/*.exe | ForEach-Object { "{0}: {1:N1} MB" -f $_.Name, ($_.Length / 1MB) }
