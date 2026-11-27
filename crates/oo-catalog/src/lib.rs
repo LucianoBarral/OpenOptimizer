@@ -80,7 +80,7 @@ pub fn load_catalog() -> Vec<TweakDef> {
     out.push(TweakDef {
         id: "ultimate-power-plan".into(),
         category: "energy".into(),
-        weight: 3,
+        weight: 2,
         requires_reboot: false,
         risk: Risk::Safe,
         post: None,
