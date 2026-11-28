@@ -1,5 +1,22 @@
 import { describe, it, expect } from 'vitest';
-import { parseChangelog, parseSections, parseInline } from './changelog';
+import { readFileSync } from 'node:fs';
+import { parseChangelog, parseSections, parseInline, pickLang } from './changelog';
+
+describe('CHANGELOG.md × CHANGELOG.en.md', () => {
+  const pt = parseChangelog(readFileSync('../CHANGELOG.md', 'utf8'));
+  const en = parseChangelog(readFileSync('../CHANGELOG.en.md', 'utf8'));
+  // Mesma estrutura nos dois idiomas: versões, datas e quantidade de itens por seção.
+  const shape = (r: typeof pt) => r.map((x) => [x.version, x.date, x.sections.map((s) => s.items.length)]);
+  it('têm as mesmas versões, datas e itens', () => expect(shape(en)).toEqual(shape(pt)));
+  it('não estão vazios', () => expect(pt.length).toBeGreaterThan(0));
+});
+
+describe('pickLang (corpo bilíngue da Release)', () => {
+  const body = '### Corrigido\n- A\n\n---\n<!-- en -->\n### Fixed\n- A (en)\n\n**Instalar:** x';
+  it('pt-BR fica com a parte de cima', () => expect(parseSections(pickLang(body, 'pt-BR'))).toEqual([{ title: 'Corrigido', items: ['A'] }]));
+  it('en fica com a parte de baixo', () => expect(parseSections(pickLang(body, 'en'))).toEqual([{ title: 'Fixed', items: ['A (en)'] }]));
+  it('corpo antigo sem marcador vale para os dois', () => expect(pickLang('- A', 'en')).toBe('- A'));
+});
 
 const md = `# Changelog
 

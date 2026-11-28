@@ -11,8 +11,7 @@
   import CloseDialog from './lib/shell/CloseDialog.svelte';
   import Splash from './lib/brand/Splash.svelte';
   import WhatsNew from './lib/shell/WhatsNew.svelte';
-  import { unseenReleases } from './lib/changelogData';
-  import type { Release } from './lib/changelog';
+  import { unseenVersions, releasesFor } from './lib/changelogData';
   import { getVersion } from '@tauri-apps/api/app';
   import { onMount } from 'svelte';
   import { get } from 'svelte/store';
@@ -21,7 +20,7 @@
   import { startAutoCheck } from './lib/update';
   import { api } from './lib/ipc/api';
   import { getClosePref, setClosePref } from './lib/closePref';
-  import { t, type MessageKey } from './lib/i18n';
+  import { t, locale, type MessageKey } from './lib/i18n';
 
   // Apresentação: a logo "acelera" (~1.4 s) e some; o app carrega por baixo nesse tempo.
   const reduced = get(reduceMotion);
@@ -29,7 +28,7 @@
   let leaving = $state(false);
   let askClose = $state(false);
   // Novidades das versões instaladas desde a última abertura (só depois de atualizar).
-  let fresh = $state<Release[]>([]);
+  let fresh = $state<string[]>([]);
   let freshVersion = $state('');
 
   function close(choice: 'tray' | 'quit') {
@@ -44,7 +43,7 @@
     getVersion()
       .then((v) => {
         freshVersion = v;
-        fresh = unseenReleases(v);
+        fresh = unseenVersions(v);
       })
       .catch(() => {});
     const unClose = api.onCloseRequested(() => {
@@ -108,7 +107,7 @@
 {/if}
 
 {#if !splash && fresh.length && !askClose}
-  <WhatsNew list={fresh} title={$t('notes.updated', { v: freshVersion })} onclose={() => (fresh = [])} />
+  <WhatsNew list={releasesFor($locale).filter((r) => fresh.includes(r.version))} title={$t('notes.updated', { v: freshVersion })} onclose={() => (fresh = [])} />
 {/if}
 
 {#if splash}<Splash {leaving} />{/if}

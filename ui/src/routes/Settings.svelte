@@ -5,7 +5,7 @@
   import Button from '../lib/design/Button.svelte';
   import { checkForUpdate } from '../lib/update';
   import WhatsNew from '../lib/shell/WhatsNew.svelte';
-  import { releases } from '../lib/changelogData';
+  import { releasesFor } from '../lib/changelogData';
   let showNotes = $state(false);
   import { getClosePref, setClosePref, type ClosePref } from '../lib/closePref';
   import { motionPref, setMotionPref, type MotionPref } from '../lib/motion';
@@ -105,7 +105,7 @@
   </section>
 </div>
 
-{#if showNotes}<WhatsNew list={releases} title={$t('notes.title')} onclose={() => (showNotes = false)} />{/if}
+{#if showNotes}<WhatsNew list={releasesFor($locale)} title={$t('notes.title')} onclose={() => (showNotes = false)} />{/if}
 
 <style>
   .page {

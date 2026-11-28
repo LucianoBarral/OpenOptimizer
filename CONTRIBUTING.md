@@ -22,7 +22,7 @@ Obrigado pelo interesse! Algumas regras mantêm o projeto confiável:
    cargo test --workspace
    npm --prefix ui run check ; npm --prefix ui test
    ```
-4. Atualize o [CHANGELOG.md](CHANGELOG.md) (seção da próxima versão) e o README, se mudar algo visível.
+4. Atualize o [CHANGELOG.md](CHANGELOG.md) e o [CHANGELOG.en.md](CHANGELOG.en.md) (seção da próxima versão, mesmos itens nos dois) e o README, se mudar algo visível.
 5. Abra o PR — o CI precisa ficar verde.
 
 ## Adicionando uma otimização

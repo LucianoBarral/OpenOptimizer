@@ -2,12 +2,12 @@
 
 Todas as mudanças relevantes do Open Optimizer. Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), versões em [SemVer](https://semver.org/lang/pt-BR/).
 
-> As notas de cada Release no GitHub são extraídas automaticamente da seção da versão correspondente. Uma versão sem seção aqui **não é publicada**.
+> As notas de cada Release no GitHub e as notas dentro do app vêm da seção da versão correspondente, aqui e no [CHANGELOG.en.md](CHANGELOG.en.md) (inglês). Os dois precisam ter as mesmas versões e itens (um teste confere); uma versão sem seção em qualquer um deles **não é publicada**.
 
 ## [0.2.2] - 2026-11-27
 
 ### Adicionado
-- **Notas de versão no app**: depois de atualizar, uma janela mostra o que mudou; a lista completa fica em Configurações → Sobre.
+- **Notas de versão no app**, em português e inglês: depois de atualizar, uma janela mostra o que mudou; a lista completa fica em Configurações → Sobre.
 - As novidades no aviso de atualização agora aparecem formatadas, em vez de texto cru.
 
 ### Alterado

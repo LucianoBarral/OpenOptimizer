@@ -2,9 +2,9 @@
   import Button from '../design/Button.svelte';
   import { available, installAndRelaunch } from '../update';
   import { applying } from '../stores';
-  import { t } from '../i18n';
+  import { t, locale } from '../i18n';
   import ReleaseNotes from './ReleaseNotes.svelte';
-  import { parseSections } from '../changelog';
+  import { parseSections, pickLang } from '../changelog';
 
   let notes = $state(false);
   let progress = $state(0);
@@ -31,7 +31,7 @@
         <Button {progress} disabled={$applying || installing} onclick={install}>{$t('update.install')}</Button>
       </div>
     </div>
-    {#if notes && $available.body}<div class="notes"><ReleaseNotes sections={parseSections($available.body)} /></div>{/if}
+    {#if notes && $available.body}<div class="notes"><ReleaseNotes sections={parseSections(pickLang($available.body, $locale))} /></div>{/if}
   </div>
 {/if}
 

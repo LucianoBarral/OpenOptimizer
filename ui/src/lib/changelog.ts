@@ -65,6 +65,16 @@ export function parseInline(s: string): Inline[] {
   return out;
 }
 
+/** Marcador entre as partes PT e EN no corpo da Release (invisível no GitHub). */
+export const EN_MARKER = '<!-- en -->';
+
+/** Corpo bilíngue da Release → só a parte do idioma. Corpos antigos (sem marcador) valem para os dois. */
+export function pickLang(body: string, locale: string): string {
+  const i = body.indexOf(EN_MARKER);
+  if (i < 0) return body;
+  return locale === 'en' ? body.slice(i + EN_MARKER.length) : body.slice(0, i);
+}
+
 /** "0.2.1" > "0.2.0"? Comparação numérica por partes (sem pré-release). */
 export function isNewer(a: string, b: string): boolean {
   const pa = a.split('.').map(Number);
