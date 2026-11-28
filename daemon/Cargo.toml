@@ -10,4 +10,5 @@ oo-gaming = { path = "../crates/oo-gaming" }
 
 [target.'cfg(windows)'.dependencies]
 oo-gaming-win = { path = "../crates/oo-gaming-win" }
+oo-fps = { path = "../crates/oo-fps" }
 windows = { version = "0.61", features = ["Win32_Foundation", "Win32_System_Threading"] }

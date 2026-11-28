@@ -6,6 +6,7 @@
   import Switch from '../lib/design/Switch.svelte';
   import LogoMark from '../lib/brand/LogoMark.svelte';
   import BusyOverlay from '../lib/brand/BusyOverlay.svelte';
+  import FpsPanel from '../lib/gaming/FpsPanel.svelte';
   import { api, type GamingView } from '../lib/ipc/api';
   import { refresh } from '../lib/stores';
   import { t, locale, type MessageKey } from '../lib/i18n';
@@ -83,7 +84,9 @@
       <Card class="s"><div class="label">{$t('gaming.stat.freed')}</div><div class="n">{formatBytes(v.status.purged_mb * 1024 * 1024, $locale)}<em>GB</em></div></Card>
     </div>
 
-    <section class="rise" style="--i:3">
+    <div class="rise" style="--i:3"><FpsPanel games={v.games} /></div>
+
+    <section class="rise" style="--i:4">
       <div class="bar">
         <div class="label">{$t('gaming.games')}</div>
         <div class="act">

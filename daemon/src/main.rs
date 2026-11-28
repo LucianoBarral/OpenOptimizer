@@ -15,6 +15,7 @@ fn main() {}
 #[cfg(windows)]
 mod daemon {
     use oo_gaming::{GamingConfig, GamingState, GamingStatus, Session};
+    use oo_gaming_win::fps::{fps_history_path, presentmon_path, FpsCapture};
     use oo_gaming_win::{
         config_path, data_dir, read_json, status_path, write_json_atomic, FileStore, WinGamingSys,
     };
@@ -48,6 +49,13 @@ mod daemon {
         }
     }
 
+    /// Fecha a captura e grava a sessão no histórico de FPS (se algum frame foi medido).
+    fn finish_capture(capture: &mut Option<FpsCapture>, now: u64) {
+        if let Some(rec) = capture.take().and_then(|c| c.finish(now)) {
+            let _ = oo_fps::append_history(&fps_history_path(), &rec);
+        }
+    }
+
     fn mtime(p: &std::path::Path) -> Option<SystemTime> {
         std::fs::metadata(p).and_then(|m| m.modified()).ok()
     }
@@ -73,6 +81,9 @@ mod daemon {
         let mut cfg_time = mtime(&cfg_path);
         let mut session = Session::default();
         let mut last_write = now();
+        // Medição de FPS: só se o presentmon.exe estiver instalado ao lado do daemon.
+        let presentmon = presentmon_path();
+        let mut capture: Option<FpsCapture> = None;
 
         loop {
             std::thread::sleep(TICK);
@@ -84,10 +95,18 @@ mod daemon {
             let n = now();
             if !cfg.enabled {
                 session.shutdown(&sys, &mut store, n, &mut status);
+                finish_capture(&mut capture, n);
                 let _ = write_json_atomic(&status_path(), &status);
                 return;
             }
+            let game_before = status.game.clone();
             let changed = session.tick(&cfg, &sys, &mut store, n, &mut status);
+            if status.game != game_before {
+                finish_capture(&mut capture, n);
+                if let (Some(game), Some(pm)) = (&status.game, &presentmon) {
+                    capture = FpsCapture::start(pm, game, n);
+                }
+            }
             let periodic = status.state == GamingState::Active
                 && n.saturating_sub(last_write) >= ACTIVE_STATUS_EVERY_S;
             if changed || periodic {

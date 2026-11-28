@@ -4,8 +4,17 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+# PresentMon falso, só para os testes de integração (CARGO_BIN_EXE_fake_presentmon).
+# Não entra no app: o instalador empacota apenas oo-gamingd e o presentmon.exe real.
+[[bin]]
+name = "fake_presentmon"
+path = "tests/support/fake_presentmon.rs"
+test = false
+doc = false
+
 [dependencies]
 oo-gaming = { path = "../oo-gaming" }
+oo-fps = { path = "../oo-fps" }
 oo-sys = { path = "../oo-sys" }
 serde.workspace = true
 serde_json.workspace = true

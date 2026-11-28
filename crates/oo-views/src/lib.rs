@@ -102,6 +102,45 @@ pub struct GamingView {
     pub daemon_running: bool,
 }
 
+/// Uma sessão medida (linha de `fps-history.jsonl`).
+#[derive(Debug, Clone, Serialize, TS)]
+#[ts(export, export_to = "../../../ui/src/lib/ipc/bindings/")]
+pub struct FpsRecordView {
+    pub game: String,
+    /// Início da sessão (unix, segundos).
+    pub started: f64,
+    pub duration_s: f64,
+    pub measured_s: f64,
+    pub frames: f64,
+    pub avg_fps: f64,
+    pub low1_fps: f64,
+    pub low01_fps: f64,
+    pub ft_p50_ms: f64,
+    pub ft_p99_ms: f64,
+    pub runtime: String,
+    pub valid: bool,
+}
+
+impl From<&oo_fps::FpsRecord> for FpsRecordView {
+    fn from(r: &oo_fps::FpsRecord) -> Self {
+        let s = &r.summary;
+        Self {
+            game: r.game.clone(),
+            started: r.started as f64,
+            duration_s: r.duration_s as f64,
+            measured_s: s.measured_s,
+            frames: s.frames as f64,
+            avg_fps: s.avg_fps,
+            low1_fps: s.low1_fps,
+            low01_fps: s.low01_fps,
+            ft_p50_ms: s.ft_p50_ms,
+            ft_p99_ms: s.ft_p99_ms,
+            runtime: s.runtime.clone(),
+            valid: r.valid,
+        }
+    }
+}
+
 impl From<&oo_core::OoError> for ErrorView {
     fn from(e: &oo_core::OoError) -> Self {
         use oo_core::OoError::*;

@@ -7,5 +7,6 @@ license.workspace = true
 [dependencies]
 oo-core = { path = "../oo-core" }
 oo-sys = { path = "../oo-sys" }
+oo-fps = { path = "../oo-fps" }
 serde.workspace = true
 ts-rs = "10"

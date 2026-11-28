@@ -8,7 +8,7 @@ use oo_gaming_win::{
     config_path, discovery, read_json, status_path, task, write_json_atomic, WinGamingSys,
 };
 use oo_sys::{Hive, RegKey, RegValue};
-use oo_views::{ErrorView, GameView, GamingStatusView, GamingView};
+use oo_views::{ErrorView, FpsRecordView, GameView, GamingStatusView, GamingView};
 use tauri::State;
 
 const DAEMON_EXE: &str = "oo-gamingd.exe";
@@ -129,6 +129,15 @@ fn view(c: &GamingConfig) -> GamingView {
 #[tauri::command]
 pub fn gaming_get() -> GamingView {
     view(&load_config())
+}
+
+/// Sessões medidas pelo daemon (mais antigas primeiro). Linhas corrompidas são ignoradas.
+#[tauri::command]
+pub fn fps_history() -> Vec<FpsRecordView> {
+    oo_fps::read_history(&oo_gaming_win::fps::fps_history_path())
+        .iter()
+        .map(FpsRecordView::from)
+        .collect()
 }
 
 #[tauri::command]

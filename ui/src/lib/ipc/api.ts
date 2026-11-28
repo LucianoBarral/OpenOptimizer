@@ -9,6 +9,7 @@ import type { ErrorView } from './bindings/ErrorView';
 import type { Progress } from './bindings/Progress';
 import type { GamingView } from './bindings/GamingView';
 import type { GameView } from './bindings/GameView';
+import type { FpsRecordView } from './bindings/FpsRecordView';
 
 /** Wrapper tipado dos comandos Tauri (nomes iguais aos de app/src/commands.rs). */
 export const api = {
@@ -34,6 +35,7 @@ export const api = {
   gamingSetGame: (exe: string, enabled: boolean) => invoke<GamingView>('gaming_set_game', { exe, enabled }),
   gamingAddGame: (path: string) => invoke<GamingView>('gaming_add_game', { path }),
   gamingScan: () => invoke<GamingView>('gaming_scan'),
+  fpsHistory: () => invoke<FpsRecordView[]>('fps_history'),
 };
 
 export const isErrorView = (e: unknown): e is ErrorView => typeof e === 'object' && e !== null && 'kind' in e;
