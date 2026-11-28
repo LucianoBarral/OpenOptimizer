@@ -11,6 +11,10 @@
   ; O Windows guarda ícones em cache pelo caminho do .exe; sem isto a barra de tarefas
   ; e o Gerenciador de Tarefas continuam mostrando o ícone antigo após uma atualização.
   nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
+  ; ie4uinit sozinho não bastou (medido na v0.2.1): avisa o shell que o ícone deste .exe
+  ; mudou (SHCNE_UPDATEITEM, SHCNF_PATHW|SHCNF_FLUSH) e que associações mudaram.
+  System::Call 'shell32::SHChangeNotify(i 0x2000, i 0x1005, w "$INSTDIR\open-optimizer.exe", p 0)'
+  System::Call 'shell32::SHChangeNotify(i 0x08000000, i 0x1000, p 0, p 0)'
 !macroend
 
 !macro NSIS_HOOK_PREUNINSTALL

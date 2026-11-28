@@ -4,6 +4,9 @@
   import Card from '../lib/design/Card.svelte';
   import Button from '../lib/design/Button.svelte';
   import { checkForUpdate } from '../lib/update';
+  import WhatsNew from '../lib/shell/WhatsNew.svelte';
+  import { releases } from '../lib/changelogData';
+  let showNotes = $state(false);
   import { getClosePref, setClosePref, type ClosePref } from '../lib/closePref';
   import { motionPref, setMotionPref, type MotionPref } from '../lib/motion';
   const motionOpts: MotionPref[] = ['always', 'system'];
@@ -85,6 +88,10 @@
     <Card class="pad">
       <div class="kv"><span>{$t('settings.version')}</span><span class="mono">{version}</span></div>
       <div class="kv upd">
+        <span>{$t('notes.title')}</span>
+        <Button variant="ghost" onclick={() => (showNotes = true)}>{$t('notes.open')}</Button>
+      </div>
+      <div class="kv upd">
         <span>
           {#if result === 'none'}{$t('update.upToDate')}{:else if result === 'error'}{$t('update.error')}{/if}
         </span>
@@ -97,6 +104,8 @@
     </Card>
   </section>
 </div>
+
+{#if showNotes}<WhatsNew list={releases} title={$t('notes.title')} onclose={() => (showNotes = false)} />{/if}
 
 <style>
   .page {
@@ -151,7 +160,9 @@
   .kv {
     display: flex;
     justify-content: space-between;
-    padding: 8px 0;
+    align-items: center;
+    min-height: 40px;
+    padding: 2px 0;
     color: var(--mut);
   }
   .kv span:last-child,

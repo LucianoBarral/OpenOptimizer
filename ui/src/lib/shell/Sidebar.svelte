@@ -36,7 +36,10 @@
   let version = $state('');
   const badge = $derived(pendingCount($tweaks));
 
+  // Configurações acompanha a altura da janela, então o indicador é remedido ao redimensionar.
+  let h = $state(0);
   $effect(() => {
+    void h;
     const el = els[$route];
     if (el) y = el.offsetTop;
   });
@@ -54,6 +57,8 @@
   </button>
 {/snippet}
 
+<svelte:window bind:innerHeight={h} />
+
 <aside>
   <div class="brand" data-tauri-drag-region>
     <LogoMark size={30} />
@@ -65,8 +70,8 @@
       {#if g.label}<div class="sec label">{$t(g.label)}</div>{/if}
       {#each g.items as it (it.id)}{@render navItem(it)}{/each}
     {/each}
-    <div class="sep"></div>
-    {@render navItem(settings)}
+    <!-- Configurações fica no pé da barra (margin-top:auto), separada das funções. -->
+    <div class="bottom">{@render navItem(settings)}</div>
   </nav>
   <div class="foot"><span class="mono">v{version}</span></div>
 </aside>
@@ -91,6 +96,8 @@
   }
   nav {
     position: relative;
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: 1px;
@@ -98,10 +105,11 @@
   .sec {
     padding: 16px 10px 6px;
   }
-  .sep {
-    height: 1px;
-    background: var(--line);
-    margin: 12px 4px;
+  .bottom {
+    margin-top: auto;
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
   }
   .ind {
     position: absolute;
@@ -157,8 +165,8 @@
     color: var(--dim);
   }
   .foot {
-    margin-top: auto;
-    padding: 14px 10px 2px;
+    margin-top: 10px;
+    padding: 12px 10px 2px;
     border-top: 1px solid var(--line);
     color: var(--dim);
     font-size: 11.5px;

@@ -4,6 +4,19 @@ Todas as mudanças relevantes do Open Optimizer. Formato baseado em [Keep a Chan
 
 > As notas de cada Release no GitHub são extraídas automaticamente da seção da versão correspondente. Uma versão sem seção aqui **não é publicada**.
 
+## [0.2.2] - 2026-11-27
+
+### Adicionado
+- **Notas de versão no app**: depois de atualizar, uma janela mostra o que mudou; a lista completa fica em Configurações → Sobre.
+- As novidades no aviso de atualização agora aparecem formatadas, em vez de texto cru.
+
+### Alterado
+- Configurações foi para o pé da barra lateral, separada das funções.
+- Aviso de atualização com mais espaço em relação aos controles da janela.
+
+### Corrigido
+- O instalador agora avisa o Windows que o ícone do app mudou, para a barra de tarefas não manter o ícone antigo após atualizar.
+
 ## [0.2.1] - 2026-11-27
 
 ### Corrigido
@@ -45,6 +58,7 @@ Todas as mudanças relevantes do Open Optimizer. Formato baseado em [Keep a Chan
 ### Adicionado
 - Primeira versão: motor de reversão com journal write-ahead, 5 otimizações (MMCSS, Game DVR, power throttling, Desempenho Máximo, aceleração do mouse), métricas reais, histórico com desfazer, PT-BR/EN e atualização automática assinada.
 
+[0.2.2]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.2
 [0.2.1]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.1
 [0.2.0]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.0
 [0.1.2]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.1.2
