@@ -6,4 +6,4 @@
 - [ ] `npm --prefix ui run check` e `npm --prefix ui test` verdes
 - [ ] Toda alteração no sistema passa pelo motor de reversão
 - [ ] Nada toca o processo de jogos
-- [ ] CHANGELOG.md atualizado
+- [ ] CHANGELOG.md e CHANGELOG.en.md atualizados (mesmos itens)

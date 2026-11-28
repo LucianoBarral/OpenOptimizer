@@ -10,6 +10,9 @@
   import UpdateBanner from './lib/shell/UpdateBanner.svelte';
   import CloseDialog from './lib/shell/CloseDialog.svelte';
   import Splash from './lib/brand/Splash.svelte';
+  import WhatsNew from './lib/shell/WhatsNew.svelte';
+  import { unseenVersions, releasesFor } from './lib/changelogData';
+  import { getVersion } from '@tauri-apps/api/app';
   import { onMount } from 'svelte';
   import { get } from 'svelte/store';
   import { reduceMotion } from './lib/motion';
@@ -17,13 +20,16 @@
   import { startAutoCheck } from './lib/update';
   import { api } from './lib/ipc/api';
   import { getClosePref, setClosePref } from './lib/closePref';
-  import { t, type MessageKey } from './lib/i18n';
+  import { t, locale, type MessageKey } from './lib/i18n';
 
   // Apresentação: a logo "acelera" (~1.4 s) e some; o app carrega por baixo nesse tempo.
   const reduced = get(reduceMotion);
   let splash = $state(true);
   let leaving = $state(false);
   let askClose = $state(false);
+  // Novidades das versões instaladas desde a última abertura (só depois de atualizar).
+  let fresh = $state<string[]>([]);
+  let freshVersion = $state('');
 
   function close(choice: 'tray' | 'quit') {
     if (choice === 'tray') api.hideToTray();
@@ -34,6 +40,12 @@
     startAutoCheck();
     const t1 = setTimeout(() => (leaving = true), reduced ? 300 : 1500);
     const t2 = setTimeout(() => (splash = false), reduced ? 400 : 1900);
+    getVersion()
+      .then((v) => {
+        freshVersion = v;
+        fresh = unseenVersions(v);
+      })
+      .catch(() => {});
     const unClose = api.onCloseRequested(() => {
       const pref = getClosePref();
       if (pref === 'ask') askClose = true;
@@ -92,6 +104,10 @@
     }}
     oncancel={() => (askClose = false)}
   />
+{/if}
+
+{#if !splash && fresh.length && !askClose}
+  <WhatsNew list={releasesFor($locale).filter((r) => fresh.includes(r.version))} title={$t('notes.updated', { v: freshVersion })} onclose={() => (fresh = [])} />
 {/if}
 
 {#if splash}<Splash {leaving} />{/if}

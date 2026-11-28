@@ -13,7 +13,7 @@ Menos input lag, frametime mais estável e Modo Gaming automático — com tudo 
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-EEF3F7?style=flat-square&labelColor=0B0C0E)](LICENSE)
 ![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-EEF3F7?style=flat-square&labelColor=0B0C0E)
 
-[**Baixar**](https://github.com/LucianoBarral/OpenOptimizer/releases/latest) · [Changelog](CHANGELOG.md) · [Contribuir](CONTRIBUTING.md) · [Segurança](SECURITY.md)
+[**Baixar**](https://github.com/LucianoBarral/OpenOptimizer/releases/latest) · [Changelog](CHANGELOG.md) ([EN](CHANGELOG.en.md)) · [Contribuir](CONTRIBUTING.md) · [Segurança](SECURITY.md)
 
 </div>
 

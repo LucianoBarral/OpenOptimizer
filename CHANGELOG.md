@@ -2,7 +2,20 @@
 
 Todas as mudanças relevantes do Open Optimizer. Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), versões em [SemVer](https://semver.org/lang/pt-BR/).
 
-> As notas de cada Release no GitHub são extraídas automaticamente da seção da versão correspondente. Uma versão sem seção aqui **não é publicada**.
+> As notas de cada Release no GitHub e as notas dentro do app vêm da seção da versão correspondente, aqui e no [CHANGELOG.en.md](CHANGELOG.en.md) (inglês). Os dois precisam ter as mesmas versões e itens (um teste confere); uma versão sem seção em qualquer um deles **não é publicada**.
+
+## [0.2.2] - 2026-11-27
+
+### Adicionado
+- **Notas de versão no app**, em português e inglês: depois de atualizar, uma janela mostra o que mudou; a lista completa fica em Configurações → Sobre.
+- As novidades no aviso de atualização agora aparecem formatadas, em vez de texto cru.
+
+### Alterado
+- Configurações foi para o pé da barra lateral, separada das funções.
+- Aviso de atualização com mais espaço em relação aos controles da janela.
+
+### Corrigido
+- O instalador agora avisa o Windows que o ícone do app mudou, para a barra de tarefas não manter o ícone antigo após atualizar.
 
 ## [0.2.1] - 2026-11-27
 
@@ -45,6 +58,7 @@ Todas as mudanças relevantes do Open Optimizer. Formato baseado em [Keep a Chan
 ### Adicionado
 - Primeira versão: motor de reversão com journal write-ahead, 5 otimizações (MMCSS, Game DVR, power throttling, Desempenho Máximo, aceleração do mouse), métricas reais, histórico com desfazer, PT-BR/EN e atualização automática assinada.
 
+[0.2.2]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.2
 [0.2.1]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.1
 [0.2.0]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.0
 [0.1.2]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.1.2
