@@ -1,10 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+// Mesmo carregamento do app (?raw), sem depender de tipos do Node no tsconfig do app.
+import rawPt from '../../../CHANGELOG.md?raw';
+import rawEn from '../../../CHANGELOG.en.md?raw';
 import { parseChangelog, parseSections, parseInline, pickLang } from './changelog';
 
 describe('CHANGELOG.md × CHANGELOG.en.md', () => {
-  const pt = parseChangelog(readFileSync('../CHANGELOG.md', 'utf8'));
-  const en = parseChangelog(readFileSync('../CHANGELOG.en.md', 'utf8'));
+  const pt = parseChangelog(rawPt);
+  const en = parseChangelog(rawEn);
   // Mesma estrutura nos dois idiomas: versões, datas e quantidade de itens por seção.
   const shape = (r: typeof pt) => r.map((x) => [x.version, x.date, x.sections.map((s) => s.items.length)]);
   it('têm as mesmas versões, datas e itens', () => expect(shape(en)).toEqual(shape(pt)));
