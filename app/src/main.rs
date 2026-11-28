@@ -83,7 +83,8 @@ fn main() {
             gaming::gaming_set_enabled,
             gaming::gaming_set_game,
             gaming::gaming_add_game,
-            gaming::gaming_scan
+            gaming::gaming_scan,
+            gaming::fps_history
         ])
         .run(tauri::generate_context!())
         .expect("falha ao iniciar o Tauri");

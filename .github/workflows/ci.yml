@@ -25,6 +25,7 @@ jobs:
       - run: cargo fmt --all --check
       # O tauri-build exige o externalBin (daemon do Modo Gaming) já compilado.
       - run: node scripts/build-daemon.mjs
+      - run: node scripts/fetch-presentmon.mjs
       - run: cargo clippy --workspace --all-targets -- -D warnings
       # O runner é admin, então o binário de teste do app (manifest requireAdministrator) também roda.
       - run: cargo test --workspace

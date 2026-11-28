@@ -2,6 +2,7 @@
 //! a detecção usa só o snapshot de nomes do Toolhelp.
 #![cfg(windows)]
 pub mod discovery;
+pub mod fps;
 pub mod store;
 pub mod task;
 pub mod winsys;

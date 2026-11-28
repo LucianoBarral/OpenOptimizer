@@ -33,6 +33,7 @@ Menos input lag, frametime mais estável e Modo Gaming automático — com tudo 
 
 - **Otimizações de desempenho e latência** — prioridade MMCSS para jogos, gravação em segundo plano do Game Bar desligada, power throttling desligado, plano Desempenho Máximo, aceleração do mouse desligada.
 - **Modo Gaming automático** — detecta o jogo, aplica timer 0,5 ms, plano Desempenho Máximo, limpeza de memória quando faltar e prioridade alta; desfaz tudo ao fechar o jogo. Descobre jogos da Steam, Epic e os que o próprio Windows reconhece.
+- **FPS medido de verdade** — cada sessão do Modo Gaming grava FPS médio, 1% low, 0,1% low e frametime (via [PresentMon](https://github.com/GameTechDev/PresentMon), da Intel, só com eventos do Windows) e o app compara antes → depois de cada mudança de otimização, por jogo.
 - **Histórico com desfazer** — cada mudança registrada, com restauração completa ao original.
 - **Bandeja do sistema** e **atualização automática assinada** pelo GitHub.
 - **Português e inglês**.
@@ -49,7 +50,7 @@ Depois de instalado, as atualizações chegam sozinhas e são verificadas por as
 
 - [x] **v0.1** — Núcleo, motor de reversão, interface, auto-update
 - [x] **v0.2** — Modo Gaming automático
-- [ ] Medição real de FPS, 1% low e frametime (antes × depois), via ETW — sem injeção
+- [x] **v0.3** — Medição real de FPS, 1% low e frametime (antes × depois), via ETW — sem injeção
 - [ ] Catálogo expandido de otimizações validado pela medição (rede, GPU, energia)
 - [ ] Apps e ajustes no estilo do [winutil](https://github.com/ChrisTitusTech/winutil)
 - [ ] Atualizador de drivers (Windows Update + fabricantes de GPU)
@@ -62,6 +63,7 @@ Requisitos: Windows 10/11, [Rust](https://rustup.rs) estável e Node 24.
 ```powershell
 npm i ; npm --prefix ui i
 node scripts/build-daemon.mjs          # compila o Modo Gaming (exigido pelo build do app)
+node scripts/fetch-presentmon.mjs      # baixa o PresentMon fixo (SHA-256 conferido)
 cargo test --workspace --exclude open-optimizer   # testes sem precisar de admin
 npm run tauri dev                      # terminal como administrador (o app exige elevação)
 ```
@@ -73,6 +75,7 @@ npm run tauri dev                      # terminal como administrador (o app exig
 | `crates/oo-catalog` | Otimizações em TOML |
 | `crates/oo-metrics` | Métricas reais (CPU, memória, timer, hardware) |
 | `crates/oo-gaming*` · `daemon/` | Modo Gaming (lógica testável + implementação Windows + processo) |
+| `crates/oo-fps` | FPS, 1% low e frametime a partir do CSV do PresentMon |
 | `crates/oo-views` | Contrato entre Rust e a interface (tipos TypeScript gerados) |
 | `app/` · `ui/` | App Tauri 2 e interface Svelte 5 |
 

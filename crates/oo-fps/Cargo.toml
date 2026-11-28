@@ -1,0 +1,10 @@
+[package]
+name = "oo-fps"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Estatísticas de frames (FPS, 1% low, frametime) a partir do CSV do PresentMon"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true

@@ -4,6 +4,15 @@ Todas as mudanças relevantes do Open Optimizer. Formato baseado em [Keep a Chan
 
 > As notas de cada Release no GitHub e as notas dentro do app vêm da seção da versão correspondente, aqui e no [CHANGELOG.en.md](CHANGELOG.en.md) (inglês). Os dois precisam ter as mesmas versões e itens (um teste confere); uma versão sem seção em qualquer um deles **não é publicada**.
 
+## [0.3.0] - 2026-11-28
+
+### Adicionado
+- **FPS medido nas sessões do Modo Gaming**: FPS médio, 1% low, 0,1% low e frametime de cada sessão, gravados automaticamente. Os primeiros 15 s (carregamento) ficam de fora e sessões com menos de 1 minuto medido não entram em comparações.
+- Seção **Desempenho medido** na tela Modo Gaming: última sessão, evolução por jogo e **antes → depois** da última mudança de otimização (mediana de até 3 sessões de cada lado). Sem sessão "antes", o app diz isso em vez de inventar um número.
+
+### Segurança
+- A medição usa o PresentMon 2.6.0 da Intel (MIT, assinado pela Intel), que só escuta eventos do Windows (ETW): nada é injetado nem aberto no processo do jogo. A versão é fixa e o SHA-256 é conferido no build.
+
 ## [0.2.2] - 2026-11-27
 
 ### Adicionado
@@ -58,6 +67,7 @@ Todas as mudanças relevantes do Open Optimizer. Formato baseado em [Keep a Chan
 ### Adicionado
 - Primeira versão: motor de reversão com journal write-ahead, 5 otimizações (MMCSS, Game DVR, power throttling, Desempenho Máximo, aceleração do mouse), métricas reais, histórico com desfazer, PT-BR/EN e atualização automática assinada.
 
+[0.3.0]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.3.0
 [0.2.2]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.2
 [0.2.1]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.1
 [0.2.0]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.0

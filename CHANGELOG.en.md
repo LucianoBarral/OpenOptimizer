@@ -4,6 +4,15 @@ All notable changes to Open Optimizer. Format based on [Keep a Changelog](https:
 
 > English version of [CHANGELOG.md](CHANGELOG.md) (Portuguese). Both must have the same versions and items: a test checks it, and a version missing from either file **is not published**.
 
+## [0.3.0] - 2026-11-28
+
+### Added
+- **FPS measured in Gaming Mode sessions**: average FPS, 1% low, 0.1% low and frametime of every session, recorded automatically. The first 15 s (loading) are left out and sessions with less than 1 minute measured don't enter comparisons.
+- **Measured performance** section on the Gaming Mode screen: last session, trend per game and **before → after** the latest optimization change (median of up to 3 sessions on each side). With no "before" session, the app says so instead of inventing a number.
+
+### Security
+- Measurement uses Intel's PresentMon 2.6.0 (MIT, signed by Intel), which only listens to Windows events (ETW): nothing is injected into or opened on the game process. The version is pinned and its SHA-256 is checked at build time.
+
 ## [0.2.2] - 2026-11-27
 
 ### Added
@@ -58,6 +67,7 @@ All notable changes to Open Optimizer. Format based on [Keep a Changelog](https:
 ### Added
 - First release: reversal engine with a write-ahead journal, 5 optimizations (MMCSS, Game DVR, power throttling, Ultimate Performance, mouse acceleration), real metrics, history with undo, PT-BR/EN and signed automatic updates.
 
+[0.3.0]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.3.0
 [0.2.2]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.2
 [0.2.1]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.1
 [0.2.0]: https://github.com/LucianoBarral/OpenOptimizer/releases/tag/v0.2.0
